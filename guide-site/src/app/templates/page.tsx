@@ -13,8 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
-import { getAllTemplates } from "@/lib/templates/store";
-import { getAllCategories } from "@/lib/templates/categories";
+import { getAllTemplates, getAllCategories } from "@/lib/templates";
 import type { CategoryId, Difficulty, SortOption, ViewMode, Template } from "@/lib/templates/types";
 import {
   TemplateCard,
