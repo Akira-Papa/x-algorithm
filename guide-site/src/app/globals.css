@@ -520,12 +520,21 @@ code {
   border: 1px solid var(--border);
 }
 
-/* テーブル - 教科書風 */
+/* テーブル - 教科書風（レスポンシブ横スクロール対応） */
 .prose table {
-  width: 100%;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin: 1.5rem 0;
   font-size: 0.9375rem;
+}
+
+.prose table thead,
+.prose table tbody {
+  display: table;
+  width: 100%;
+  min-width: 640px; /* PC表示時の適切なサイズを維持 */
 }
 
 .prose th,
@@ -533,6 +542,13 @@ code {
   border: 1px solid var(--border);
   padding: 0.625rem 0.875rem;
   text-align: left;
+  white-space: nowrap;
+}
+
+/* 説明列など長いテキストは折り返し許可 */
+.prose td:last-child {
+  white-space: normal;
+  min-width: 200px;
 }
 
 .prose th {
@@ -768,4 +784,41 @@ code {
   color: var(--primary);
   font-weight: 600;
   margin-right: 0.5rem;
+}
+
+/* ================================================
+   テーブル - レスポンシブ横スクロール対応（グローバル）
+   ================================================ */
+
+/* スクロールラッパー内のテーブルに最小幅を設定 */
+.overflow-x-auto table,
+div[class*="overflow-x-auto"] table {
+  min-width: 600px;
+}
+
+/* テーブルセルの最小幅設定（内容に応じて適切な幅を確保） */
+.overflow-x-auto table th,
+.overflow-x-auto table td,
+div[class*="overflow-x-auto"] table th,
+div[class*="overflow-x-auto"] table td {
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+/* 説明・ロジック・動作列は折り返し許可（長いテキスト用） */
+.overflow-x-auto table th:nth-child(n+3),
+.overflow-x-auto table td:nth-child(n+3),
+div[class*="overflow-x-auto"] table th:nth-child(n+3),
+div[class*="overflow-x-auto"] table td:nth-child(n+3) {
+  white-space: normal;
+  min-width: 120px;
+}
+
+/* 最初の列（名前列）は固定幅 */
+.overflow-x-auto table th:first-child,
+.overflow-x-auto table td:first-child,
+div[class*="overflow-x-auto"] table th:first-child,
+div[class*="overflow-x-auto"] table td:first-child {
+  min-width: 100px;
+  white-space: nowrap;
 }
