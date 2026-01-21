@@ -10,7 +10,6 @@ import {
   ChartBarSquareIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const specPages = [
   {
@@ -76,7 +75,6 @@ export default function SpecsPage() {
             <BookOpenIcon className="h-5 w-5" />
             <span className="text-sm font-medium">Xアルゴリズム攻略ガイド</span>
           </Link>
-          <ThemeToggle />
         </div>
       </header>
 

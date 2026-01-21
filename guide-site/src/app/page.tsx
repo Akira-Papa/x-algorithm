@@ -15,7 +15,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { chapters } from "@/lib/chapters";
 import { rankingData } from "@/lib/rankings";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { WebSiteJsonLd } from "@/components/ui/JsonLd";
 
 export default function Home() {
@@ -33,7 +32,6 @@ export default function Home() {
             <BookOpenIcon className="h-5 w-5 text-foreground" />
             <span className="text-sm font-medium">Xアルゴリズム攻略ガイド</span>
           </div>
-          <ThemeToggle />
         </div>
       </header>
 

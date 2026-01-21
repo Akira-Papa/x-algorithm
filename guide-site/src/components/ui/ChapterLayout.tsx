@@ -8,7 +8,6 @@ import {
   BookOpenIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
 
 interface ChapterNavigation {
   prev?: {
@@ -60,7 +59,6 @@ export function ChapterLayout({
               </span>
             )}
           </div>
-          <ThemeToggle />
         </div>
       </header>
 

@@ -11,7 +11,6 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { getAllTemplates, getAllCategories } from "@/lib/templates";
 import type { CategoryId, Difficulty, SortOption, ViewMode, Template } from "@/lib/templates/types";
@@ -179,7 +178,6 @@ function TemplatesContent() {
             <BookOpenIcon className="h-5 w-5" />
             <span className="text-sm font-medium">Xアルゴリズム攻略ガイド</span>
           </Link>
-          <ThemeToggle />
         </div>
       </header>
 

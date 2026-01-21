@@ -5,4 +5,3 @@ export { ChapterNav } from "./ChapterNav";
 export { Quiz } from "./Quiz";
 export type { QuizQuestion } from "./Quiz";
 export { Sidebar } from "./Sidebar";
-export { ThemeToggle } from "./ThemeToggle";
