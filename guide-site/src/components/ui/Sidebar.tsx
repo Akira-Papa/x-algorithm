@@ -14,6 +14,26 @@ import {
   CpuChipIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  Squares2X2Icon,
+  InformationCircleIcon,
+  CubeTransparentIcon,
+  SparklesIcon,
+  ChartBarIcon,
+  FunnelIcon,
+  BoltIcon,
+  LightBulbIcon,
+  HeartIcon,
+  FireIcon,
+  ChatBubbleLeftRightIcon,
+  QuestionMarkCircleIcon,
+  NewspaperIcon,
+  MegaphoneIcon,
+  PhotoIcon,
+  VideoCameraIcon,
+  CursorArrowRaysIcon,
+  UserGroupIcon,
+  ClockIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 
@@ -107,7 +127,7 @@ function SidebarContent({
                 key={chapter.id}
                 href={`/chapters/${chapter.id}`}
                 className={cn(
-                  "group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-200",
+                  "group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200",
                   isChapterActive(chapter.id)
                     ? "bg-info"
                     : "hover:bg-secondary"
@@ -128,7 +148,7 @@ function SidebarContent({
                 </span>
                 {/* 章タイトル */}
                 {!isCollapsed && (
-                  <div className="min-w-0 flex-1 pt-0.5">
+                  <div className="min-w-0 flex-1">
                     <span
                       className={cn(
                         "block text-sm leading-tight transition-colors",
@@ -183,13 +203,13 @@ function SidebarContent({
 
           <div className="space-y-1">
             {[
-              { href: "/specs", label: "仕様一覧" },
-              { href: "/specs/overview", label: "概要" },
-              { href: "/specs/architecture", label: "アーキテクチャ" },
-              { href: "/specs/phoenix-ml", label: "Phoenix ML" },
-              { href: "/specs/scoring", label: "スコアリング" },
-              { href: "/specs/filtering", label: "フィルタリング" },
-              { href: "/specs/thunder-pipeline", label: "Thunder Pipeline" },
+              { href: "/specs", label: "仕様一覧", icon: Squares2X2Icon },
+              { href: "/specs/overview", label: "概要", icon: InformationCircleIcon },
+              { href: "/specs/architecture", label: "アーキテクチャ", icon: CubeTransparentIcon },
+              { href: "/specs/phoenix-ml", label: "Phoenix ML", icon: SparklesIcon },
+              { href: "/specs/scoring", label: "スコアリング", icon: ChartBarIcon },
+              { href: "/specs/filtering", label: "フィルタリング", icon: FunnelIcon },
+              { href: "/specs/thunder-pipeline", label: "Thunder Pipeline", icon: BoltIcon },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -203,11 +223,73 @@ function SidebarContent({
                 onClick={() => setIsMobileMenuOpen(false)}
                 title={item.label}
               >
-                {isCollapsed ? (
-                  <CpuChipIcon className="h-5 w-5 flex-shrink-0" />
-                ) : (
-                  <span className="ml-1">{item.label}</span>
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>{item.label}</span>}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* テンプレート集セクション */}
+        <div className="px-3 pb-4">
+          {!isCollapsed && (
+            <div className="mb-3 flex items-center gap-2 px-3">
+              <LightBulbIcon className="h-4 w-4 text-muted-foreground" />
+              <span className="text-xs font-semibold text-muted-foreground tracking-wider">
+                テンプレート集
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+          )}
+
+          <div className="space-y-1">
+            {/* テンプレート一覧リンク */}
+            <Link
+              href="/templates"
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-200",
+                isActive("/templates")
+                  ? "bg-info text-primary font-medium"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              )}
+              onClick={() => setIsMobileMenuOpen(false)}
+              title="テンプレート一覧"
+            >
+              <Squares2X2Icon className="h-5 w-5 flex-shrink-0" />
+              {!isCollapsed && <span>一覧</span>}
+            </Link>
+
+            {/* カテゴリリンク */}
+            {[
+              { href: "/templates/engagement", label: "エンゲージ", icon: HeartIcon },
+              { href: "/templates/viral", label: "バイラル", icon: FireIcon },
+              { href: "/templates/thread", label: "スレッド", icon: ChatBubbleLeftRightIcon },
+              { href: "/templates/question", label: "質問", icon: QuestionMarkCircleIcon },
+              { href: "/templates/value", label: "価値提供", icon: AcademicCapIcon },
+              { href: "/templates/story", label: "ストーリー", icon: BookOpenIcon },
+              { href: "/templates/news", label: "ニュース", icon: NewspaperIcon },
+              { href: "/templates/opinion", label: "意見", icon: MegaphoneIcon },
+              { href: "/templates/visual", label: "ビジュアル", icon: PhotoIcon },
+              { href: "/templates/video", label: "動画", icon: VideoCameraIcon },
+              { href: "/templates/cta", label: "CTA", icon: CursorArrowRaysIcon },
+              { href: "/templates/community", label: "コミュニティ", icon: UserGroupIcon },
+              { href: "/templates/timing", label: "タイミング", icon: ClockIcon },
+              { href: "/templates/personal", label: "パーソナル", icon: UserCircleIcon },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200",
+                  pathname.startsWith(item.href)
+                    ? "bg-info text-primary font-medium"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 )}
+                onClick={() => setIsMobileMenuOpen(false)}
+                title={item.label}
+              >
+                <item.icon className="h-4 w-4 flex-shrink-0" />
+                {!isCollapsed && <span>{item.label}</span>}
               </Link>
             ))}
           </div>
