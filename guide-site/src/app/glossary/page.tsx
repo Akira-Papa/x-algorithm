@@ -20,7 +20,6 @@ interface GlossaryTerm {
   term: string;
   reading?: string;
   category: string;
-  shortDescription: string;
   description: string;
   relatedTerms?: string[];
   relatedChapters?: number[];
@@ -34,8 +33,11 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Two-Tower',
     reading: 'ツータワー',
     category: 'ml',
-    shortDescription: 'コンテンツとユーザーを別々のニューラルネットワークで処理する検索アーキテクチャ',
-    description: `Two-Towerは、Xの推薦システムの根幹をなす機械学習アーキテクチャです。ユーザータワーとコンテンツタワーの2つのネットワークでそれぞれベクトル化し、類似度でマッチングスコアを算出します。`,
+    description: `Xの推薦システムの根幹をなす機械学習アーキテクチャ。「ユーザータワー」と「コンテンツタワー」という2つの独立したニューラルネットワークで構成されています。
+
+ユーザータワーは、あなたの過去の行動（いいね、リプライ、フォローなど）や興味関心を分析し、「あなたがどんな人か」を数百次元のベクトル（数値の配列）で表現します。一方、コンテンツタワーは、各ツイートのテキスト、画像、投稿者情報などを分析し、「このツイートがどんな内容か」を同じく数百次元のベクトルで表現します。
+
+最終的に、この2つのベクトルの「近さ（類似度）」を計算することで、「このユーザーにこのツイートはどれくらい合うか」というマッチングスコアを高速に算出できます。毎秒数億件の候補から瞬時にあなたに合うコンテンツを選び出せるのは、この仕組みのおかげです。`,
     relatedTerms: ['phoenix', 'embedding', 'candidate-generation'],
     relatedChapters: [3],
   },
@@ -44,8 +46,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Phoenix',
     reading: 'フェニックス',
     category: 'ml',
-    shortDescription: 'ユーザーの長期的な興味関心を予測するMLモデル',
-    description: `Phoenixは、Xの推薦システムで使用される機械学習モデルです。ユーザーが将来どのようなコンテンツに興味を持つかを予測し、19種類のエンゲージメント予測に使用されます。`,
+    description: `Xの推薦システムで使用される主力機械学習モデル。ユーザーが「次にどんなアクションを取るか」を予測する役割を担っています。
+
+具体的には、あるツイートを見たときに、あなたが「いいねする確率」「リプライする確率」「リポストする確率」「プロフィールをクリックする確率」など、19種類のエンゲージメント行動それぞれの発生確率を予測します。
+
+この予測結果は、weighted_scorer.rsで定義された重み（リプライ13.5、プロフィールクリック12.0、いいね0.5など）と掛け合わされ、最終的なスコアが決まります。つまり、Phoenixの予測精度がタイムラインの質を大きく左右するのです。
+
+名前の「Phoenix（不死鳥）」は、モデルが継続的に学習・進化し続けることを表しています。`,
     relatedTerms: ['two-tower', 'engagement'],
     relatedChapters: [4],
   },
@@ -54,8 +61,11 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Embedding',
     reading: 'エンベディング',
     category: 'ml',
-    shortDescription: 'テキストや画像をベクトル（数値の配列）に変換した表現',
-    description: `Embeddingは、テキストや画像などの非構造化データを固定長のベクトルに変換する技術です。類似したコンテンツは近いベクトル空間に配置されます。`,
+    description: `テキスト、画像、ユーザー行動などの複雑なデータを、コンピュータが計算しやすい「ベクトル（数値の配列）」に変換する技術。
+
+例えば、「猫の写真」と「犬の写真」は、人間から見れば「動物の写真」という点で似ていますが、コンピュータにとっては単なるピクセルの羅列です。Embeddingを使うと、「猫」も「犬」も数百個の数値の配列に変換され、しかも「動物」という概念が近い位置に配置されるように学習されます。
+
+Xでは、ツイートの内容をEmbeddingに変換し、ユーザーの興味もEmbeddingに変換することで、「このツイートはこのユーザーに合うか？」を数学的に計算できるようになります。これがTwo-Tower検索やSimClusterの基盤技術です。`,
     relatedTerms: ['two-tower', 'simcluster'],
     relatedChapters: [3, 4],
   },
@@ -64,8 +74,11 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'SimCluster',
     reading: 'シムクラスター',
     category: 'ml',
-    shortDescription: 'ユーザーとツイートをクラスタリングする機能',
-    description: `SimClusterは、類似した興味を持つユーザーやツイートをグループ化する機能です。OON（Out of Network）の関連性判定に使用されます。`,
+    description: `「似た興味を持つユーザー」と「似た内容のツイート」を自動的にグループ化（クラスタリング）するシステム。
+
+Xには数億人のユーザーと毎日数億件のツイートがありますが、SimClusterはこれらを約15万個の「クラスター（グループ）」に分類します。例えば「日本のアニメ好き」「米国の政治に関心がある人」「テック系スタートアップに興味がある人」のようなグループが自動的に形成されます。
+
+あなたがフォローしていない人のツイートでも、あなたと同じクラスターに属する人が多くエンゲージしていれば、「おすすめ」として表示される可能性が高くなります。これがOON（Out of Network）推薦の仕組みの核心部分です。`,
     relatedTerms: ['oon', 'topical-authority'],
     relatedChapters: [7],
   },
@@ -76,8 +89,15 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Engagement',
     reading: 'エンゲージメント',
     category: 'engagement',
-    shortDescription: 'ユーザーがコンテンツに対して行うアクション全般',
-    description: `Engagementは、いいね、リポスト、リプライ、ブックマークなどユーザーがコンテンツに対して行うアクション全般を指します。Xでは19種類のエンゲージメントが定義されています。`,
+    description: `ユーザーがツイートに対して行うすべてのアクション（反応）の総称。Xのアルゴリズムは、このエンゲージメントを最も重要な指標として扱っています。
+
+Xのソースコード（weighted_scorer.rs）では、15種類のポジティブなエンゲージメントと4種類のネガティブなエンゲージメントが定義されています。
+
+【ポジティブ（スコアが上がる）】
+・リプライ（replied: 13.5） ・プロフィールクリック（profile_clicked: 12.0） ・フォロー（followed: 4.0） ・通知オン（notification_enabled: 2.0） ・動画品質視聴（video_quality_view: 1.5） ・外部共有（shared_externally: 1.2） ・引用RT（quoted: 1.1） ・リンククリック（link_clicked: 1.1） ・リポスト（retweeted: 1.0） ・ブックマーク（bookmark_added: 1.0） ・いいね（favorited: 0.5）など
+
+【ネガティブ（スコアが下がる）】
+・通報（reported: -10.0） ・ブロック（blocked: -10.0） ・ミュート（muted: -5.0） ・興味なし（not_interested: -1.5）`,
     relatedTerms: ['fav', 'repost', 'reply', 'bookmark'],
     relatedChapters: [2],
   },
@@ -86,8 +106,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Fav (いいね)',
     reading: 'ファボ',
     category: 'engagement',
-    shortDescription: 'コンテンツに対する基本的な好意的反応',
-    description: `Favは「いいね」の内部呼称です。スコア計算では0.5ポイントとして扱われ、最も基本的なエンゲージメント指標の1つです。`,
+    description: `ツイートに対する最も基本的な好意的反応。ハートマークをタップすることで行います。
+
+意外かもしれませんが、いいねはXのアルゴリズムでは最も軽い重み（0.5ポイント）しかありません。リプライ（13.5）の27分の1、プロフィールクリック（12.0）の24分の1の価値です。
+
+これは「いいねは気軽にできるアクション」だからです。アルゴリズムは、より深いコミットメントを示すアクション（リプライして会話する、プロフィールを見に行く、フォローする）を高く評価します。
+
+したがって、「いいね稼ぎ」に注力するよりも、「リプライが付くような投稿」「プロフィールを見たくなるような投稿」を意識した方が、アルゴリズム的には有利です。`,
     relatedTerms: ['engagement', 'reply', 'repost'],
     relatedChapters: [2, 5],
   },
@@ -96,8 +121,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Repost (リポスト)',
     reading: 'リポスト',
     category: 'engagement',
-    shortDescription: 'コンテンツを自分のタイムラインで共有するアクション',
-    description: `Repostは、他者のツイートを自分のフォロワーに共有するアクションです。スコア計算では1.0ポイントとして重要視されます。`,
+    description: `他の人のツイートを、自分のフォロワーのタイムラインに共有するアクション。旧称は「リツイート（RT）」。
+
+スコア計算では1.0ポイントで、いいね（0.5）の2倍の重みがあります。「このツイートは自分のフォロワーにも見せたい」という積極的な意思表示として評価されるためです。
+
+リポストされたツイートは、リポストした人のフォロワー全員のタイムラインに表示される候補になるため、拡散力が非常に高いアクションです。
+
+なお、引用RT（quoted: 1.1）はリポスト（1.0）よりわずかに高い重みがあります。自分のコメントを付けている分、より深い関与と見なされるためです。`,
     relatedTerms: ['engagement', 'fav', 'quote'],
     relatedChapters: [2, 5],
   },
@@ -106,8 +136,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Reply (リプライ)',
     reading: 'リプライ',
     category: 'engagement',
-    shortDescription: 'ツイートへの返信コメント',
-    description: `Replyは、ツイートへの返信です。スコア計算では27.0ポイントと非常に高い重みが設定されており、会話を促進するコンテンツが優遇されます。`,
+    description: `ツイートに対する返信コメント。Xアルゴリズムで最も高く評価されるエンゲージメントです。
+
+スコア計算では13.5ポイントと、いいね（0.5）の27倍もの重みがあります。これは、リプライが「会話」を生み出すアクションだからです。Xは「会話が生まれるプラットフォーム」を目指しており、会話を促進するコンテンツを強く優遇しています。
+
+つまり、バズりたいなら「いいねが付く投稿」ではなく「リプライが付く投稿」を目指すべきです。質問で終わる投稿、意見が分かれるテーマ、体験の共有を促す投稿などが効果的です。
+
+注意点として、自分のリプライではなく「他の人からもらうリプライ」が重要です。自分で自分にリプライしても意味がありません。`,
     relatedTerms: ['engagement', 'conversation'],
     relatedChapters: [2, 5],
   },
@@ -116,8 +151,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Bookmark (ブックマーク)',
     reading: 'ブックマーク',
     category: 'engagement',
-    shortDescription: 'コンテンツを後で見返すために保存するアクション',
-    description: `Bookmarkは、コンテンツを保存するプライベートなアクションです。スコア計算では0.5ポイントで、他者には見えない深い興味の指標となります。`,
+    description: `ツイートを自分だけの「保存リスト」に追加するアクション。他のユーザーからは見えないプライベートな機能です。
+
+スコア計算では1.0ポイントで、リポストと同じ重みがあります。「後で読み返したい」「保存しておきたい」という深い興味の表れとして評価されます。
+
+ブックマークは他人に見えないため、「人に見られたくないけど保存したい」という本音の興味を反映しています。アルゴリズムはこの「隠れた興味」も重要なシグナルとして活用しています。
+
+保存したくなるような「まとめ系」「チェックリスト」「ノウハウ集」などのコンテンツは、ブックマークを獲得しやすいです。`,
     relatedTerms: ['engagement', 'fav'],
     relatedChapters: [2, 5],
   },
@@ -126,8 +166,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Dwell Time',
     reading: 'ドウェルタイム',
     category: 'engagement',
-    shortDescription: 'ユーザーがコンテンツを閲覧した時間',
-    description: `Dwell Timeは、ユーザーがあるコンテンツに留まった時間を計測する指標です。長いDwell Timeは深い興味を示すシグナルとして扱われます。`,
+    description: `ユーザーがあるツイートを画面に表示した状態で過ごした時間。「滞在時間」とも呼ばれます。
+
+長いDwell Timeは「このツイートに興味を持って読んでいる」シグナルとして扱われます。逆に、すぐにスクロールで通り過ぎたツイートは「興味がなかった」と判断されます。
+
+Xはミリ秒単位でDwell Timeを計測しており、動的にスコアに反映しています。長文ツイートや画像・動画付きツイートは、自然とDwell Timeが長くなりやすいです。
+
+ただし、無理に長くする必要はありません。内容に見合わない長さは、途中離脱を招き、かえってネガティブなシグナルになる可能性があります。`,
     relatedTerms: ['engagement', 'vqv'],
     relatedChapters: [2, 9],
   },
@@ -138,28 +183,53 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Trust Score',
     reading: 'トラストスコア',
     category: 'scoring',
-    shortDescription: 'アカウントの信頼性を示すスコア',
-    description: `Trust Scoreは、アカウントの信頼性を0-1の範囲で示す内部スコアです。アカウント年齢、フォロー/フォロワー比率、認証状態などから算出されます。`,
+    description: `アカウントの「信頼性」を0〜1の範囲で示す内部スコア。スパムアカウントや悪質アカウントを見分けるために使われます。
+
+Trust Scoreは以下の要素から算出されます：
+・アカウント年齢（古いほど高い）
+・認証ステータス（青バッジ、金バッジで加点）
+・プロフィールの完成度（アイコン、ヘッダー、自己紹介文）
+・電話番号/メールアドレスの認証
+・過去の通報・ブロック・ミュートされた回数（多いほど減点）
+
+Trust Scoreが低いアカウントは、投稿のリーチが制限されたり、おすすめに表示されにくくなります。
+
+特に危険なのは「フォロワー購入」です。不自然なフォロワー増加はTrust Scoreを壊滅させ、長期的なアカウント成長が不可能になります。一度壊れたTrust Scoreの回復は極めて困難です。`,
     relatedTerms: ['topical-authority', 'reputation'],
-    relatedChapters: [11],
+    relatedChapters: [10],
   },
   {
     id: 'topical-authority',
     term: 'Topical Authority',
     reading: 'トピカルオーソリティ',
     category: 'scoring',
-    shortDescription: '特定トピックにおけるアカウントの専門性指標',
-    description: `Topical Authorityは、特定のトピックにおいてアカウントがどれだけ影響力・専門性を持っているかを示す指標です。一貫した投稿テーマが高スコアにつながります。`,
+    description: `特定のトピック（話題）において、そのアカウントがどれだけ「専門家」「権威」として認められているかを示す指標。
+
+例えば、料理の話題で多くのエンゲージメントを獲得しているアカウントは、「料理」トピックでの Topical Authority が高くなります。すると、料理に興味があるユーザーに、そのアカウントの投稿がおすすめされやすくなります。
+
+Topical Authorityを高めるには：
+・一貫したテーマで継続的に発信する
+・そのテーマでリプライやリポストを獲得する
+・同じテーマの権威あるアカウントとの交流（相互リプライなど）
+
+逆に、テーマを頻繁に変えると、どのトピックでもAuthorityが蓄積されず、おすすめに載りにくくなります。「何でも屋」より「専門家」の方がアルゴリズム的に有利です。`,
     relatedTerms: ['trust-score', 'simcluster'],
-    relatedChapters: [8, 11],
+    relatedChapters: [8, 10],
   },
   {
     id: 'real-graph-weight',
     term: 'RealGraphWeight',
     reading: 'リアルグラフウェイト',
     category: 'scoring',
-    shortDescription: 'フォロー関係の強さを示す重み付け',
-    description: `RealGraphWeightは、フォロー関係の強さを示す指標です。単なるフォロー関係だけでなく、実際のインタラクション頻度も考慮されます。`,
+    description: `フォロー関係の「強さ」を数値化した指標。単にフォローしているだけでなく、実際にどれだけ交流があるかを測定します。
+
+例えば、あなたがAさんをフォローしていても：
+・Aさんの投稿にいいねやリプライをしていない → RealGraphWeight低
+・Aさんの投稿に頻繁に反応している → RealGraphWeight高
+
+RealGraphWeightが高いアカウントの投稿は、あなたのタイムラインで上位に表示されやすくなります。逆に、フォローしていても交流がないアカウントは、タイムラインに表示されにくくなります。
+
+これは「フォローしているけど見ていない」関係を検出し、本当に興味があるコンテンツを優先するための仕組みです。`,
     relatedTerms: ['inn', 'oon'],
     relatedChapters: [7],
   },
@@ -168,8 +238,17 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'VQV (Video Quality View)',
     reading: 'ブイキューブイ',
     category: 'scoring',
-    shortDescription: '動画の品質視聴を判定する指標',
-    description: `VQVは、動画が一定時間以上視聴された場合に「品質視聴」としてカウントする指標です。完全再生率や再生時間が重要な要素となります。`,
+    description: `動画の「品質視聴」を判定する指標。単に動画が再生されただけでなく、「意図的に視聴された」かどうかを測定します。
+
+VQVとしてカウントされる条件：
+・10秒以上の視聴
+・音声がONの状態
+・画面の中央付近で再生（スクロール中の端っこではない）
+・40%以上の視聴完了率
+
+スコア計算では1.5ポイントで、いいね（0.5）の3倍の重みがあります。一方、単純な動画再生（video_playback_50: 0.005）はほとんど価値がありません。
+
+つまり、「見られた回数」より「ちゃんと見られた回数」が重要です。冒頭3秒で引き込む、字幕を付ける、適切な長さにするなど、最後まで見てもらう工夫が必要です。`,
     relatedTerms: ['dwell-time', 'engagement'],
     relatedChapters: [9],
   },
@@ -180,8 +259,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'SafetyFilter',
     reading: 'セーフティフィルター',
     category: 'filtering',
-    shortDescription: '暴力・ヘイト・違法コンテンツを検出するフィルター',
-    description: `SafetyFilterは、暴力、ヘイトスピーチ、テロ、違法行為などのコンテンツを検出し、SAFE/SENSITIVE/UNSAFEで分類するフィルターです。`,
+    description: `暴力、ヘイトスピーチ、テロリズム、違法行為などの危険なコンテンツを検出・分類するフィルター。
+
+コンテンツは3段階で分類されます：
+・SAFE: 問題なし、通常表示
+・SENSITIVE: 注意が必要、警告表示や制限付き表示
+・UNSAFE: 危険、完全に除外（タイムラインに表示されない）
+
+UNSAFEと判定されたコンテンツは、どれだけエンゲージメントが高くても一切表示されません。さらに、繰り返しUNSAFE判定を受けると、アカウント凍結のリスクが高まります。
+
+機械学習による自動検出に加え、ユーザーからの通報も判定に影響します。「炎上商法」は短期的に注目を集めても、長期的にはSafetyFilterに引っかかり、アカウントにダメージを与えます。`,
     relatedTerms: ['nsfw-filter', 'spam-filter'],
     relatedChapters: [6],
   },
@@ -190,8 +277,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'NsfwFilter',
     reading: 'エヌエスエフダブリューフィルター',
     category: 'filtering',
-    shortDescription: '成人向けコンテンツを検出するフィルター',
-    description: `NsfwFilterは、性的コンテンツや成人向けコンテンツを検出するフィルターです。検出されたコンテンツは年齢確認が必要になったり、表示制限を受けます。`,
+    description: `NSFW（Not Safe For Work＝職場で見るのに適さない）、つまり性的コンテンツや成人向けコンテンツを検出するフィルター。
+
+検出されたコンテンツは：
+・年齢確認が必要になる
+・「センシティブな内容」として警告が表示される
+・一部のユーザー設定では非表示になる
+
+明確に禁止されているコンテンツ（児童ポルノなど）は完全に除外され、投稿者はアカウント停止処分を受けます。
+
+意図せずNSFW判定を受けることもあります。例えば、医療的な画像や芸術作品が誤検出されるケースです。その場合は異議申し立てが可能です。`,
     relatedTerms: ['safety-filter', 'quality-filter'],
     relatedChapters: [6],
   },
@@ -200,8 +295,18 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'SpamFilter',
     reading: 'スパムフィルター',
     category: 'filtering',
-    shortDescription: '大量投稿や自動化を検出するフィルター',
-    description: `SpamFilterは、大量投稿、自動化、リンク乱用などのスパム行為を検出するフィルターです。スパムと判定されるとリーチ制限やアカウント凍結の対象となります。`,
+    description: `スパム行為（迷惑行為）を検出するフィルター。Xの「やってはいけない」ランキング1位の原因となるフィルターです。
+
+SpamFilterが検出する主な行為：
+・短時間での大量投稿
+・自動化ツールによる不自然な行動
+・同一内容の繰り返し投稿
+・大量の不自然なリンク
+・大量フォロー/アンフォロー
+
+スパムと判定されると、投稿のリーチが大幅に制限されるか、最悪の場合アカウント凍結となります。
+
+重要：「外部リンクを含む投稿」自体はペナルティ対象ではありません。SpamFilterが対象とするのは「大量の不自然なリンク」であり、単一の外部リンクは問題ありません（ソースコードで確認済み）。`,
     relatedTerms: ['safety-filter', 'quality-filter'],
     relatedChapters: [6],
   },
@@ -210,8 +315,21 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'QualityFilter',
     reading: 'クオリティフィルター',
     category: 'filtering',
-    shortDescription: 'コンテンツの情報価値を判定するフィルター',
-    description: `QualityFilterは、コンテンツの情報価値やオリジナリティを判定するフィルターです。低品質と判定されたコンテンツはリーチ制限を受けます。`,
+    description: `コンテンツの「情報価値」や「オリジナリティ」を判定するフィルター。低品質なコンテンツのリーチを制限します。
+
+低品質と判定されやすいコンテンツ：
+・意味のないテキスト（「あああ」など）
+・他のツイートの丸コピー
+・情報価値がほとんどない短文
+・スパム的なフォーマット
+
+高品質と判定されやすいコンテンツ：
+・オリジナルの意見や分析
+・有用な情報を含む
+・適切な長さと構成
+・画像や動画を効果的に使用
+
+QualityFilterは、タイムラインに表示されるコンテンツ全体の質を維持するための仕組みです。`,
     relatedTerms: ['spam-filter', 'visibility-filter'],
     relatedChapters: [6],
   },
@@ -220,8 +338,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'VisibilityFilter',
     reading: 'ビジビリティフィルター',
     category: 'filtering',
-    shortDescription: 'コンテンツの表示範囲を制御するフィルター',
-    description: `VisibilityFilterは、コンテンツがどの範囲で表示されるかを制御するフィルターです。ユーザー設定やコンテンツの特性に基づいて動作します。`,
+    description: `コンテンツの「表示範囲」を制御する総合的なフィルター。複数のサブフィルターで構成されています。
+
+主なサブフィルター：
+・LanguageFilter: フォロワーと異なる言語の投稿は0.1倍（実質非表示）
+・FreshnessFilter: 48時間超の投稿は候補から除外
+・DuplicateFilter: 重複コンテンツは除外
+・BlockedFilter: ブロック関係にあるユーザー間は非表示
+・MutedFilter: ミュート設定に基づき非表示
+
+これらのフィルターは「ユーザー体験の質」を維持するために存在します。例えば、48時間以上前の投稿が延々と表示されたら、ユーザーは新鮮な情報を得られなくなります。`,
     relatedTerms: ['quality-filter', 'author-diversity'],
     relatedChapters: [6],
   },
@@ -230,10 +356,19 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Author Diversity',
     reading: 'オーサーダイバーシティ',
     category: 'filtering',
-    shortDescription: 'タイムラインにおける著者の多様性を確保する仕組み',
-    description: `Author Diversityは、同一著者のコンテンツがタイムラインを占有することを防ぐ仕組みです。連続表示制限などで実現されています。`,
+    description: `タイムラインに同一著者のツイートが連続して表示されることを防ぐ仕組み。「著者多様性」とも呼ばれます。
+
+具体的な動作：
+・同一著者の1番目のツイート: 100%のスコア
+・同一著者の2番目のツイート: 55%のスコア（-45%）
+・同一著者の3番目のツイート: 32.5%のスコア（-67.5%）
+・同一著者の5番目以降: 約10%のスコア（-90%）
+
+重要な誤解：これは「投稿自体へのペナルティ」ではなく、「タイムライン表示時の調整」です。連続投稿しても、投稿自体のスコアは下がりません。単に、同じ人の投稿が連続表示されないよう順序が調整されるだけです。
+
+また、4-6時間経過するとリセットされます。「連続投稿は絶対NG」という説は、このAuthor Diversityの仕組みを誤解したものです。`,
     relatedTerms: ['visibility-filter', 'timeline'],
-    relatedChapters: [8],
+    relatedChapters: [5, 8],
   },
 
   // システムカテゴリ
@@ -242,8 +377,13 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'In-Network (IN)',
     reading: 'インネットワーク',
     category: 'system',
-    shortDescription: 'フォローしているアカウントからのコンテンツ',
-    description: `In-Networkは、ユーザーがフォローしているアカウントからのコンテンツを指します。フォロー関係に基づく推薦であり、基本的なタイムライン構成要素です。`,
+    description: `あなたが「フォローしている」アカウントからのコンテンツ。「フォロー中」タブに表示されるツイートが該当します。
+
+In-Networkのツイートは、Out-of-Network（フォローしていないアカウント）よりも基本的に優先されます。スコア計算では、OONツイートには0.85倍のペナルティ（15%減）がかかります。
+
+ただし、単にフォローしているだけでは不十分です。RealGraphWeight（実際の交流頻度）が低いと、フォローしていてもタイムラインに表示されにくくなります。
+
+「フォローしているのに最近見かけない」アカウントがいたら、それはRealGraphWeightが下がっている証拠です。積極的にいいねやリプライをすることで、表示頻度を上げられます。`,
     relatedTerms: ['oon', 'real-graph-weight'],
     relatedChapters: [7],
   },
@@ -252,8 +392,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Out-of-Network (OON)',
     reading: 'アウトオブネットワーク',
     category: 'system',
-    shortDescription: 'フォローしていないアカウントからのコンテンツ',
-    description: `Out-of-Networkは、ユーザーがフォローしていないアカウントからのコンテンツを指します。SimClusterやトピック類似性に基づいて推薦されます。`,
+    description: `あなたが「フォローしていない」アカウントからのコンテンツ。「For You」タブで「おすすめ」として表示されるツイートの多くがこれに該当します。
+
+OONツイートがあなたに推薦される主な理由：
+・SimClusterで、あなたと同じ興味グループの人がエンゲージしている
+・あなたがフォローしている人がリポスト/いいねした
+・あなたの過去の行動から、興味がありそうと予測された
+
+OONツイートは、In-Networkより15%低いスコアからスタートします（0.85倍）。それでもタイムラインに表示されるということは、それだけ高いエンゲージメントを獲得しているということです。
+
+あなたの投稿をOONユーザー（非フォロワー）に届けるには、SimClusterで同じグループに属するユーザーからのエンゲージメントが重要です。`,
     relatedTerms: ['inn', 'simcluster'],
     relatedChapters: [7],
   },
@@ -262,8 +410,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Candidate Generation',
     reading: 'キャンディデートジェネレーション',
     category: 'system',
-    shortDescription: '推薦候補を大量に生成する初期段階',
-    description: `Candidate Generationは、推薦システムの最初の段階で、大量のコンテンツ候補を生成するプロセスです。Two-Towerなどで実現されます。`,
+    description: `推薦システムの最初のステップ。膨大なツイートの中から「あなたに見せる候補」を数千〜数万件に絞り込むプロセスです。
+
+Xには毎日数億件のツイートが投稿されますが、すべてを詳細に評価することは不可能です。そこで、Candidate Generationで大まかに「候補」を選び、その後のRanking段階で詳細なスコアリングを行います。
+
+候補生成の主な方法：
+・In-Network: フォローしている人の最新ツイート
+・SimCluster: 似た興味を持つユーザーがエンゲージしたツイート
+・トピックベース: あなたが興味を示したトピックのツイート
+
+この段階で候補に入らないと、どれだけ良いツイートでもあなたには表示されません。だからこそ、投稿直後のエンゲージメント（初動）が重要なのです。`,
     relatedTerms: ['two-tower', 'ranking'],
     relatedChapters: [1, 3],
   },
@@ -272,8 +428,17 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Ranking',
     reading: 'ランキング',
     category: 'system',
-    shortDescription: '候補コンテンツをスコアで並び替える段階',
-    description: `Rankingは、Candidate Generationで生成された候補を、各種スコアに基づいて並び替えるプロセスです。最終的なタイムライン表示順を決定します。`,
+    description: `Candidate Generationで選ばれた候補ツイートを、スコアに基づいて「表示順」を決定するプロセス。最終的なタイムラインの並び順を決める重要な段階です。
+
+Rankingでは、各ツイートに対して複数のスコアが計算されます：
+・Phoenixによるエンゲージメント予測スコア
+・weighted_scorer.rsで定義された重み付けスコア
+・Trust Score、Topical Authorityなどの信頼性スコア
+・各種フィルターによる調整
+
+これらを総合して、最終的なスコアが決まります。スコアが高いツイートほど、タイムラインの上位に表示されます。
+
+重要なのは、Rankingは「リアルタイム」で行われることです。同じツイートでも、時間経過とともにスコアは変化します（FreshnessFilterの影響など）。`,
     relatedTerms: ['candidate-generation', 'scoring'],
     relatedChapters: [1, 5],
   },
@@ -282,8 +447,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Timeline (For You)',
     reading: 'タイムライン',
     category: 'system',
-    shortDescription: 'ユーザーに表示されるパーソナライズされたフィード',
-    description: `Timeline (For You)は、ユーザーに表示されるパーソナライズされたコンテンツフィードです。INとOONの両方からコンテンツが選択・順位付けされます。`,
+    description: `ユーザーに表示されるパーソナライズされたコンテンツフィード。Xアプリを開いたときに最初に見る画面です。
+
+「For You」タイムラインは、以下のコンテンツで構成されます：
+・In-Network（フォロー中）: 約50-70%
+・Out-of-Network（おすすめ）: 約30-50%
+・広告: 一定割合で挿入
+
+タイムラインの構成は、ユーザーの行動に応じて動的に変化します。OONツイートに多くエンゲージする人には、OONの割合が増えます。
+
+「フォロー中」タブは、純粋にフォローしている人のツイートだけが時系列で表示されます。アルゴリズムの影響を受けたくない場合はこちらを使用できます。`,
     relatedTerms: ['inn', 'oon', 'ranking'],
     relatedChapters: [1, 7],
   },
@@ -294,8 +467,16 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Hook (フック)',
     reading: 'フック',
     category: 'content',
-    shortDescription: 'ユーザーの注意を引く導入部分',
-    description: `Hookは、ツイートや動画の冒頭でユーザーの注意を引きつけるための要素です。最初の数秒や数文字が重要とされています。`,
+    description: `ツイートや動画の冒頭で、ユーザーの注意を引きつけ「続きを見たい」と思わせる要素。釣り針（hook）のように読者を引っ掛けることからこの名前がついています。
+
+効果的なHookの例：
+・意外性のある事実「〇〇は実は△△だった」
+・問題提起「なぜ〇〇は△△なのか？」
+・数字を使った具体性「3年で100万円貯めた方法」
+・緊急性「今すぐやめるべき〇〇」
+・共感「〇〇あるあるが辛すぎる」
+
+動画の場合、最初の3秒が勝負です。ここで興味を引けないと、ユーザーはスクロールして次のコンテンツに移ってしまいます。VQV（品質視聴）を獲得するためにも、冒頭のHookは非常に重要です。`,
     relatedTerms: ['cta', 'dwell-time'],
     relatedChapters: [9, 10],
   },
@@ -304,8 +485,17 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'CTA (Call to Action)',
     reading: 'シーティーエー',
     category: 'content',
-    shortDescription: 'ユーザーにアクションを促す要素',
-    description: `CTAは、ユーザーに特定のアクション（いいね、フォロー、クリックなど）を促すための要素です。適切なCTAはエンゲージメント向上に貢献します。`,
+    description: `ユーザーに具体的なアクションを促す要素。「行動喚起」とも呼ばれます。
+
+効果的なCTAの例：
+・「この投稿が役に立ったらリポストお願いします」
+・「あなたの経験もリプライで教えてください」
+・「続きはプロフィールのリンクから」
+・「フォローすると毎日〇〇の情報が届きます」
+
+ただし注意：過度なCTAは「エンゲージメントベイト」と見なされ、ユーザーに嫌われる原因になります。「いいねしたら〇〇をプレゼント」のような露骨な誘導は避けましょう。
+
+ソースコード上、エンゲージメントベイトを自動検出するML機構は確認できませんでしたが、ユーザーからの通報やミュートによって、結果的にスコアが下がる可能性があります。`,
     relatedTerms: ['hook', 'engagement'],
     relatedChapters: [10],
   },
@@ -314,8 +504,20 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Thread (スレッド)',
     reading: 'スレッド',
     category: 'content',
-    shortDescription: '複数のツイートを連続して投稿する形式',
-    description: `Threadは、複数のツイートを連続して投稿し、長文コンテンツを構成する形式です。適切な長さと構成がエンゲージメントに影響します。`,
+    description: `複数のツイートを連続して投稿し、長文コンテンツを構成する形式。140文字では伝えきれない内容を、複数のツイートに分けて投稿します。
+
+スレッドのメリット：
+・Dwell Time（滞在時間）が長くなりやすい
+・「続きを読みたい」という興味を喚起しやすい
+・各ツイートが個別にリポストされる可能性がある
+・ブックマークされやすい
+
+効果的なスレッドの構成：
+・1ツイート目: 強力なHookで興味を引く
+・中間: 価値ある情報を段階的に提供
+・最後: CTAで行動を促す
+
+注意点として、スレッドは「投稿」としては1回の扱いなので、Author Diversityの影響は受けません。ただし、短時間に複数のスレッドを投稿すると、Author Diversityの対象になります。`,
     relatedTerms: ['engagement', 'dwell-time'],
     relatedChapters: [10],
   },
@@ -324,10 +526,19 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Pinned Tweet',
     reading: 'ピンドツイート',
     category: 'content',
-    shortDescription: 'プロフィールの上部に固定表示されるツイート',
-    description: `Pinned Tweetは、プロフィールページの上部に固定表示されるツイートです。新規訪問者への第一印象を形成する重要な要素です。`,
+    description: `プロフィールページの最上部に固定表示されるツイート。新規訪問者が最初に目にするコンテンツであり、「自己紹介」の役割を果たします。
+
+効果的なPinned Tweetの例：
+・自己紹介と提供価値の明示
+・最も人気のあった投稿
+・現在のキャンペーンや告知
+・代表的な実績やポートフォリオ
+
+Pinned Tweetは、プロフィールクリック後のフォロー率に大きく影響します。プロフィールクリック（12.0ポイント）は非常に高い価値がありますが、そこからフォロー（4.0ポイント）につなげるには、魅力的なPinned Tweetが重要です。
+
+定期的に更新することで、常に最新の情報を訪問者に伝えられます。古いPinned Tweetを放置すると、「活動していないアカウント」という印象を与えかねません。`,
     relatedTerms: ['trust-score', 'profile'],
-    relatedChapters: [11],
+    relatedChapters: [10],
   },
 ];
 
@@ -346,7 +557,6 @@ function getCategoryLabel(categoryId: string) {
 export default function GlossaryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [expandedTerms, setExpandedTerms] = useState<Set<string>>(new Set());
 
   // フィルタリングとソート
   const filteredTerms = useMemo(() => {
@@ -362,7 +572,7 @@ export default function GlossaryPage() {
           return (
             term.term.toLowerCase().includes(query) ||
             term.reading?.toLowerCase().includes(query) ||
-            term.shortDescription.toLowerCase().includes(query)
+            term.description.toLowerCase().includes(query)
           );
         }
         return true;
@@ -373,18 +583,6 @@ export default function GlossaryPage() {
         return readingA.localeCompare(readingB, 'ja');
       });
   }, [searchQuery, selectedCategory]);
-
-  const toggleExpand = (termId: string) => {
-    setExpandedTerms((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(termId)) {
-        newSet.delete(termId);
-      } else {
-        newSet.add(termId);
-      }
-      return newSet;
-    });
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -479,7 +677,6 @@ export default function GlossaryPage() {
         <div className="grid gap-4 md:grid-cols-2">
           {filteredTerms.map((term) => {
             const color = getCategoryColor(term.category);
-            const isExpanded = expandedTerms.has(term.id);
 
             return (
               <div
@@ -510,21 +707,15 @@ export default function GlossaryPage() {
                   </span>
                 </div>
 
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {term.shortDescription}
-                </p>
+                {/* 詳細説明 */}
+                <div className="mt-3">
+                  <p className="text-sm whitespace-pre-wrap">{term.description}</p>
+                </div>
 
-                {/* 展開時の詳細説明 */}
-                {isExpanded && (
+                {/* 関連章リンク */}
+                {term.relatedChapters && term.relatedChapters.length > 0 && (
                   <div className="mt-3 pt-3 border-t border-border">
-                    <p className="text-sm whitespace-pre-wrap">{term.description}</p>
-                  </div>
-                )}
-
-                {/* 関連章リンクと詳細ボタン */}
-                <div className="mt-3 flex items-center justify-between">
-                  {term.relatedChapters && term.relatedChapters.length > 0 ? (
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {term.relatedChapters.map((ch) => (
                         <Link
                           key={ch}
@@ -535,16 +726,8 @@ export default function GlossaryPage() {
                         </Link>
                       ))}
                     </div>
-                  ) : (
-                    <div />
-                  )}
-                  <button
-                    onClick={() => toggleExpand(term.id)}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    {isExpanded ? '閉じる' : '詳細を見る'}
-                  </button>
-                </div>
+                  </div>
+                )}
               </div>
             );
           })}

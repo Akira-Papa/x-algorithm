@@ -3,7 +3,14 @@
  * 循環参照を避けるため、独立したファイルに分離
  */
 
-import { Template, CategoryId } from './types';
+import {
+  Template,
+  CategoryId,
+  TemplateFilters,
+  TemplateSorting,
+  TemplatePagination,
+  EngagementLevel,
+} from './types';
 
 /**
  * テンプレートのストレージ
@@ -100,4 +107,101 @@ export function searchTemplates(query: string): Template[] {
       t.description.toLowerCase().includes(lowerQuery) ||
       t.effects.some((e) => e.toLowerCase().includes(lowerQuery))
   );
+}
+
+/**
+ * 複数条件でテンプレートをフィルタリング
+ * @param templates - フィルタリング対象のテンプレート配列
+ * @param filters - フィルター条件
+ * @returns フィルタリングされたテンプレートの配列
+ */
+export function filterTemplates(
+  templates: Template[],
+  filters: TemplateFilters
+): Template[] {
+  let result = templates;
+
+  if (filters.categories.length > 0) {
+    result = result.filter((t) => filters.categories.includes(t.category));
+  }
+
+  if (filters.difficulty) {
+    result = result.filter((t) => t.difficulty === filters.difficulty);
+  }
+
+  if (filters.search) {
+    const query = filters.search.toLowerCase();
+    result = result.filter(
+      (t) =>
+        t.title.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query) ||
+        t.effects.some((e) => e.toLowerCase().includes(query))
+    );
+  }
+
+  return result;
+}
+
+/**
+ * テンプレートのエンゲージメントスコアを計算
+ * @param template - テンプレート
+ * @returns エンゲージメントスコア
+ */
+export function getEngagementScore(template: Template): number {
+  const levels: Record<EngagementLevel, number> = { low: 1, medium: 2, high: 3 };
+  return Object.values(template.expectedEngagement).reduce(
+    (sum, level) => sum + levels[level as EngagementLevel],
+    0
+  );
+}
+
+/**
+ * テンプレートをソート
+ * @param templates - ソート対象のテンプレート配列
+ * @param sorting - ソート設定
+ * @returns ソートされたテンプレートの配列
+ */
+export function sortTemplates(
+  templates: Template[],
+  sorting: TemplateSorting
+): Template[] {
+  const sorted = [...templates];
+
+  switch (sorting.sortBy) {
+    case 'category':
+      sorted.sort((a, b) => a.category.localeCompare(b.category));
+      break;
+    case 'difficulty':
+      const diffOrder: Record<string, number> = {
+        beginner: 1,
+        intermediate: 2,
+        advanced: 3,
+      };
+      sorted.sort((a, b) => diffOrder[a.difficulty] - diffOrder[b.difficulty]);
+      break;
+    case 'engagement':
+      sorted.sort((a, b) => getEngagementScore(b) - getEngagementScore(a));
+      break;
+    default:
+      // default order - by ID
+      break;
+  }
+
+  if (sorting.order === 'desc') sorted.reverse();
+  return sorted;
+}
+
+/**
+ * テンプレートをページネーション
+ * @param templates - ページネーション対象のテンプレート配列
+ * @param pagination - ページネーション設定
+ * @returns ページネーションされたテンプレートの配列
+ */
+export function paginateTemplates(
+  templates: Template[],
+  pagination: TemplatePagination
+): Template[] {
+  const { page, itemsPerPage } = pagination;
+  const start = (page - 1) * itemsPerPage;
+  return templates.slice(start, start + itemsPerPage);
 }

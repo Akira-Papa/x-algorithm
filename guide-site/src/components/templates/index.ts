@@ -17,3 +17,12 @@ export { PointsList } from "./PointsList";
 export { CautionsList } from "./CautionsList";
 export { RelatedChapters } from "./RelatedChapters";
 export { RelatedTemplates } from "./RelatedTemplates";
+
+// Template list/filter components
+export { TemplateListItem, TemplateList } from "./TemplateListItem";
+export { TemplatesSearchInput } from "./TemplatesSearchInput";
+export { TemplatesSortSelect } from "./TemplatesSortSelect";
+export { TemplatesCategoryFilter } from "./TemplatesCategoryFilter";
+export { TemplatesDifficultyFilter } from "./TemplatesDifficultyFilter";
+export { TemplatesViewToggle } from "./TemplatesViewToggle";
+export { TemplatesPagination } from "./TemplatesPagination";

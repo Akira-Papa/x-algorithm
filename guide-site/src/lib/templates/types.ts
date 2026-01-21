@@ -96,3 +96,28 @@ export const ENGAGEMENT_LEVEL_LABELS: Record<EngagementLevel, string> = {
   medium: '中',
   high: '高',
 };
+
+/** ソートオプション */
+export type SortOption = 'default' | 'category' | 'difficulty' | 'engagement';
+
+/** テンプレートフィルター */
+export interface TemplateFilters {
+  categories: CategoryId[];
+  difficulty: Difficulty | null;
+  search: string;
+}
+
+/** テンプレートソート設定 */
+export interface TemplateSorting {
+  sortBy: SortOption;
+  order: 'asc' | 'desc';
+}
+
+/** テンプレートページネーション */
+export interface TemplatePagination {
+  page: number;
+  itemsPerPage: number;
+}
+
+/** 表示モード */
+export type ViewMode = 'list' | 'card';

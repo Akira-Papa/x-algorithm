@@ -1,85 +1,172 @@
 "use client";
 
+import { useState, useMemo, useCallback, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpenIcon,
   ArrowLeftIcon,
   DocumentTextIcon,
-  HeartIcon,
-  ArrowPathRoundedSquareIcon,
-  QueueListIcon,
-  ChatBubbleLeftRightIcon,
-  AcademicCapIcon,
-  NewspaperIcon,
-  MegaphoneIcon,
-  PhotoIcon,
-  VideoCameraIcon,
-  CursorArrowRaysIcon,
-  UserGroupIcon,
-  ClockIcon,
-  UserCircleIcon,
+  FunnelIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from "@heroicons/react/24/outline";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { categories } from "@/lib/templates/categories";
-import type { Category } from "@/lib/templates/types";
+import { cn } from "@/lib/utils";
+import { getAllTemplates } from "@/lib/templates/store";
+import { getAllCategories } from "@/lib/templates/categories";
+import type { CategoryId, Difficulty, SortOption, ViewMode, Template } from "@/lib/templates/types";
+import {
+  TemplateCard,
+  TemplateList,
+  TemplatesSearchInput,
+  TemplatesSortSelect,
+  TemplatesCategoryFilter,
+  TemplatesDifficultyFilter,
+  TemplatesViewToggle,
+  TemplatesPagination,
+} from "@/components/templates";
 
-// アイコンマッピング
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  HeartIcon,
-  ArrowPathRoundedSquareIcon,
-  QueueListIcon,
-  ChatBubbleLeftRightIcon,
-  AcademicCapIcon,
-  BookOpenIcon,
-  NewspaperIcon,
-  MegaphoneIcon,
-  PhotoIcon,
-  VideoCameraIcon,
-  CursorArrowRaysIcon,
-  UserGroupIcon,
-  ClockIcon,
-  UserCircleIcon,
-};
+const ITEMS_PER_PAGE = 20;
 
-// カラーマッピング
-const colorMap: Record<string, string> = {
-  rose: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
-  purple: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
-  blue: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-  green: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20",
-  amber: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  orange: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20",
-  red: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
-  indigo: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
-  pink: "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20",
-  cyan: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
-  emerald: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-  violet: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
-  sky: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20",
-  teal: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20",
-};
+function TemplatesContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-// カラーバッジマッピング
-const badgeColorMap: Record<string, string> = {
-  rose: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300",
-  purple: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-  blue: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  green: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-  amber: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
-  orange: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-  red: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-  indigo: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300",
-  pink: "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300",
-  cyan: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300",
-  emerald: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
-  violet: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
-  sky: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300",
-  teal: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300",
-};
+  // URL状態の読み取り
+  const categoryParam = searchParams.get("category");
+  const selectedCategories: CategoryId[] = categoryParam
+    ? (categoryParam.split(",") as CategoryId[])
+    : [];
+  const selectedDifficulty = searchParams.get("difficulty") as Difficulty | null;
+  const searchQuery = searchParams.get("search") || "";
+  const sortBy = (searchParams.get("sort") || "default") as SortOption;
+  const sortOrder = (searchParams.get("order") || "asc") as "asc" | "desc";
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const viewMode = (searchParams.get("view") || "card") as ViewMode;
 
-export default function TemplatesPage() {
-  const categoryCount = categories.length;
-  const templateCount = categoryCount * 10;
+  // フィルター展開状態
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(true);
+
+  // URL更新関数
+  const updateParams = useCallback(
+    (updates: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === "") {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      });
+      // ページをリセット（検索/フィルター変更時）
+      if (!("page" in updates)) {
+        params.delete("page");
+      }
+      const queryString = params.toString();
+      router.push(queryString ? `/templates?${queryString}` : "/templates", { scroll: false });
+    },
+    [searchParams, router]
+  );
+
+  // データ取得
+  const allTemplates = useMemo(() => getAllTemplates(), []);
+  const categories = useMemo(() => getAllCategories(), []);
+
+  // フィルタリング
+  const filteredTemplates = useMemo(() => {
+    let result = allTemplates;
+
+    // カテゴリフィルタ
+    if (selectedCategories.length > 0) {
+      result = result.filter((t) => selectedCategories.includes(t.category));
+    }
+
+    // 難易度フィルタ
+    if (selectedDifficulty) {
+      result = result.filter((t) => t.difficulty === selectedDifficulty);
+    }
+
+    // 検索フィルタ
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.title.toLowerCase().includes(query) ||
+          t.description.toLowerCase().includes(query) ||
+          t.effects.some((e) => e.toLowerCase().includes(query))
+      );
+    }
+
+    return result;
+  }, [allTemplates, selectedCategories, selectedDifficulty, searchQuery]);
+
+  // ソート
+  const sortedTemplates = useMemo(() => {
+    const sorted = [...filteredTemplates];
+
+    switch (sortBy) {
+      case "category":
+        sorted.sort((a, b) => a.category.localeCompare(b.category));
+        break;
+      case "difficulty": {
+        const diffOrder: Record<string, number> = {
+          beginner: 1,
+          intermediate: 2,
+          advanced: 3,
+        };
+        sorted.sort((a, b) => diffOrder[a.difficulty] - diffOrder[b.difficulty]);
+        break;
+      }
+      case "engagement": {
+        const getScore = (t: Template) => {
+          const levels: Record<string, number> = { low: 1, medium: 2, high: 3 };
+          return Object.values(t.expectedEngagement).reduce(
+            (sum, level) => sum + levels[level],
+            0
+          );
+        };
+        sorted.sort((a, b) => getScore(b) - getScore(a));
+        break;
+      }
+      default:
+        // デフォルト順（ID順）
+        break;
+    }
+
+    if (sortOrder === "desc") sorted.reverse();
+    return sorted;
+  }, [filteredTemplates, sortBy, sortOrder]);
+
+  // ページネーション
+  const totalPages = Math.ceil(sortedTemplates.length / ITEMS_PER_PAGE);
+  const paginatedTemplates = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return sortedTemplates.slice(start, start + ITEMS_PER_PAGE);
+  }, [sortedTemplates, currentPage]);
+
+  // フィルター状態テキスト
+  const getFilterStatusText = () => {
+    const parts: string[] = [];
+    if (selectedCategories.length > 0) {
+      const catNames = selectedCategories
+        .map((id) => categories.find((c) => c.id === id)?.name || id)
+        .join(", ");
+      parts.push(catNames);
+    }
+    if (selectedDifficulty) {
+      const diffLabels: Record<string, string> = {
+        beginner: "初級",
+        intermediate: "中級",
+        advanced: "上級",
+      };
+      parts.push(diffLabels[selectedDifficulty]);
+    }
+    if (searchQuery) {
+      parts.push(`「${searchQuery}」`);
+    }
+    return parts.length > 0 ? parts.join(" / ") : "すべて";
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,11 +199,11 @@ export default function TemplatesPage() {
       </nav>
 
       {/* ヒーローセクション */}
-      <section className="border-b border-border px-6 py-12 md:py-16">
+      <section className="border-b border-border px-6 py-8 md:py-12">
         <div className="mx-auto max-w-5xl">
           <div className="mx-auto max-w-2xl text-center">
             {/* 装飾ライン */}
-            <div className="mb-6 flex items-center justify-center gap-4">
+            <div className="mb-4 flex items-center justify-center gap-4">
               <div className="h-px w-12 bg-border" />
               <span className="text-xs tracking-widest text-muted-foreground">
                 STRATEGIC TEMPLATES
@@ -125,27 +212,27 @@ export default function TemplatesPage() {
             </div>
 
             {/* タイトル */}
-            <h1 className="mb-4 text-2xl font-bold tracking-tight md:text-3xl">
+            <h1 className="mb-3 text-2xl font-bold tracking-tight md:text-3xl">
               戦略的投稿テンプレート集
             </h1>
 
             {/* サブタイトル */}
-            <p className="mb-8 text-muted-foreground">
-              Xアルゴリズムに最適化された{templateCount}個の実践例
+            <p className="mb-6 text-muted-foreground">
+              Xアルゴリズムに最適化された{allTemplates.length}個の実践例
             </p>
 
             {/* 統計 */}
             <div className="flex items-center justify-center gap-8">
               <div className="text-center">
                 <div className="text-2xl font-bold text-foreground">
-                  {categoryCount}
+                  {categories.length}
                 </div>
                 <div className="text-xs text-muted-foreground">カテゴリ</div>
               </div>
               <div className="h-8 w-px bg-border" />
               <div className="text-center">
                 <div className="text-2xl font-bold text-foreground">
-                  {templateCount}
+                  {allTemplates.length}
                 </div>
                 <div className="text-xs text-muted-foreground">テンプレート</div>
               </div>
@@ -155,20 +242,145 @@ export default function TemplatesPage() {
       </section>
 
       {/* メインコンテンツ */}
-      <main className="px-6 py-12 md:py-16">
+      <main className="px-6 py-8 md:py-12">
         <div className="mx-auto max-w-5xl">
-          {/* セクションヘッダー */}
-          <div className="mb-8 flex items-center gap-3">
-            <DocumentTextIcon className="h-5 w-5 text-muted-foreground" />
-            <h2 className="text-lg font-semibold">カテゴリ一覧</h2>
+          {/* 検索・フィルターセクション */}
+          <div className="mb-6 rounded-lg border border-border bg-card p-4">
+            {/* 検索バー + ソート + 表示切替 */}
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex-1 max-w-md">
+                <TemplatesSearchInput
+                  value={searchQuery}
+                  onChange={(value) => updateParams({ search: value || null })}
+                />
+              </div>
+              <div className="flex items-center gap-3">
+                <TemplatesSortSelect
+                  sortBy={sortBy}
+                  onSortByChange={(value) => updateParams({ sort: value === "default" ? null : value })}
+                  order={sortOrder}
+                  onOrderChange={(value) => updateParams({ order: value === "asc" ? null : value })}
+                />
+                <TemplatesViewToggle
+                  view={viewMode}
+                  onChange={(value) => updateParams({ view: value === "card" ? null : value })}
+                />
+              </div>
+            </div>
+
+            {/* フィルター展開トグル */}
+            <button
+              onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+              className="mt-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <FunnelIcon className="h-4 w-4" />
+              <span>フィルター</span>
+              {isFiltersExpanded ? (
+                <ChevronUpIcon className="h-4 w-4" />
+              ) : (
+                <ChevronDownIcon className="h-4 w-4" />
+              )}
+            </button>
+
+            {/* フィルター詳細 */}
+            {isFiltersExpanded && (
+              <div className="mt-4 space-y-4 border-t border-border pt-4">
+                {/* カテゴリフィルター */}
+                <div>
+                  <label className="mb-2 block text-xs font-medium text-muted-foreground">
+                    カテゴリ
+                  </label>
+                  <TemplatesCategoryFilter
+                    selectedCategories={selectedCategories}
+                    onChange={(cats) =>
+                      updateParams({ category: cats.length > 0 ? cats.join(",") : null })
+                    }
+                  />
+                </div>
+
+                {/* 難易度フィルター */}
+                <div>
+                  <label className="mb-2 block text-xs font-medium text-muted-foreground">
+                    難易度
+                  </label>
+                  <TemplatesDifficultyFilter
+                    selectedDifficulty={selectedDifficulty}
+                    onChange={(diff) => updateParams({ difficulty: diff })}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* カテゴリカード一覧 */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
+          {/* 結果ステータス */}
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">{getFilterStatusText()}</span>
+              {" "}の{sortedTemplates.length}件
+              {totalPages > 1 && ` (${currentPage}/${totalPages}ページ)`}
+            </p>
+            {(selectedCategories.length > 0 || selectedDifficulty || searchQuery) && (
+              <button
+                onClick={() =>
+                  updateParams({
+                    category: null,
+                    difficulty: null,
+                    search: null,
+                  })
+                }
+                className="text-sm text-primary hover:underline"
+              >
+                フィルターをクリア
+              </button>
+            )}
           </div>
+
+          {/* テンプレート一覧 */}
+          {paginatedTemplates.length > 0 ? (
+            <>
+              {viewMode === "card" ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {paginatedTemplates.map((template) => (
+                    <TemplateCard key={template.id} template={template} />
+                  ))}
+                </div>
+              ) : (
+                <TemplateList templates={paginatedTemplates} />
+              )}
+
+              {/* ページネーション */}
+              {totalPages > 1 && (
+                <div className="mt-8">
+                  <TemplatesPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={(page) => updateParams({ page: page === 1 ? null : String(page) })}
+                    totalItems={sortedTemplates.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="rounded-lg border border-border bg-card p-12 text-center">
+              <DocumentTextIcon className="mx-auto h-12 w-12 text-muted-foreground/50" />
+              <p className="mt-4 text-muted-foreground">
+                該当するテンプレートが見つかりませんでした
+              </p>
+              <button
+                onClick={() =>
+                  updateParams({
+                    category: null,
+                    difficulty: null,
+                    search: null,
+                  })
+                }
+                className="mt-4 text-sm text-primary hover:underline"
+              >
+                フィルターをリセット
+              </button>
+            </div>
+          )}
 
           {/* 補足情報 */}
           <div className="mt-12 rounded-lg border border-border bg-card p-6">
@@ -219,48 +431,10 @@ export default function TemplatesPage() {
   );
 }
 
-function CategoryCard({ category }: { category: Category }) {
-  const Icon = iconMap[category.icon] || DocumentTextIcon;
-  const colorClass = colorMap[category.color] || colorMap.blue;
-  const badgeClass = badgeColorMap[category.color] || badgeColorMap.blue;
-
+export default function TemplatesPage() {
   return (
-    <Link
-      href={`/templates/${category.id}`}
-      className="group flex flex-col rounded-lg border border-border bg-card p-5 transition-all hover:border-foreground/30 hover:bg-accent/50 hover:shadow-sm"
-    >
-      {/* アイコン */}
-      <div
-        className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg border ${colorClass}`}
-      >
-        <Icon className="h-5 w-5" />
-      </div>
-
-      {/* カテゴリ名 */}
-      <h3 className="mb-2 text-base font-semibold group-hover:text-foreground">
-        {category.name}
-      </h3>
-
-      {/* 説明 */}
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">
-        {category.description}
-      </p>
-
-      {/* フッター */}
-      <div className="flex items-center justify-between">
-        {/* テンプレート数バッジ */}
-        <span
-          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeClass}`}
-        >
-          10テンプレート
-        </span>
-
-        {/* 詳細リンク */}
-        <span className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
-          詳細
-          <ArrowLeftIcon className="h-3 w-3 rotate-180 transition-transform group-hover:translate-x-1" />
-        </span>
-      </div>
-    </Link>
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center">読み込み中...</div>}>
+      <TemplatesContent />
+    </Suspense>
   );
 }
