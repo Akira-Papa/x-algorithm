@@ -63,20 +63,20 @@ export const chapters: Chapter[] = [
   {
     id: "10",
     number: 10,
-    title: "投稿テンプレート",
-    description: "質問誘発型、プロフィール誘導型など5種類の成功パターンを解説します。",
-  },
-  {
-    id: "11",
-    number: 11,
     title: "アカウント設計とブランディング",
     description: "Trust ScoreとTopical Authorityの構築方法とプロフィール最適化を解説します。",
   },
   {
-    id: "12",
-    number: 12,
+    id: "11",
+    number: 11,
     title: "データ分析と継続的改善",
     description: "KPI設定、PDCAサイクル、長期成長ロードマップを解説します。",
+  },
+  {
+    id: "12",
+    number: 12,
+    title: "総まとめと実践ロードマップ",
+    description: "全章の知識を実践に落とし込むためのチェックリストとフェーズ別戦略を解説します。",
   },
 ];
 

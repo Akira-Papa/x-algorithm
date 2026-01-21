@@ -49,7 +49,7 @@ export const visualTemplates: Template[] = [
       'モバイルで見やすいサイズに',
       '出典が必要なデータは明記する',
     ],
-    relatedChapters: [2, 9, 10],
+    relatedChapters: [2, 9],
     relatedTemplates: ['value-01', 'thread-02', 'video-04'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -103,7 +103,7 @@ export const visualTemplates: Template[] = [
       '公平な視点で両方の良さを伝える',
       '比較基準を明確にする',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['opinion-04', 'question-02', 'value-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -157,7 +157,7 @@ After（改善後）:
       '他者の変化を許可なく使わない',
       '成果の再現性について過度な期待を持たせない',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['story-02', 'video-02', 'cta-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -211,7 +211,7 @@ After（改善後）:
       '専門用語は必要に応じて解説',
       'モバイルでも読めるサイズに',
     ],
-    relatedChapters: [5, 8, 10],
+    relatedChapters: [5, 8],
     relatedTemplates: ['visual-01', 'value-01', 'thread-02'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -262,7 +262,7 @@ After（改善後）:
       '機密情報や個人情報は必ず隠す',
       '数字の捏造は絶対にNG',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['value-02', 'story-02', 'opinion-04'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -310,7 +310,7 @@ After（改善後）:
       '位置情報がわかる写真に注意',
       '日常投稿ばかりにならないよう注意',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['personal-01', 'community-02', 'engagement-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -355,7 +355,7 @@ After（改善後）:
       '著作権のある画像の無断使用は禁止',
       'やりすぎると軽い印象になる',
     ],
-    relatedChapters: [7, 9, 10],
+    relatedChapters: [7, 9],
     relatedTemplates: ['engagement-01', 'community-01', 'personal-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -406,7 +406,7 @@ After（改善後）:
       '守秘義務のあるものは公開しない',
       '批判への耐性を持っておく',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['cta-01', 'story-02', 'engagement-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -460,7 +460,7 @@ After（改善後）:
       '誤解を招くグラフ表現は避ける',
       '一般化しすぎた結論は注意',
     ],
-    relatedChapters: [8, 10, 12],
+    relatedChapters: [8, 11],
     relatedTemplates: ['visual-01', 'opinion-01', 'value-02'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -513,7 +513,7 @@ After（改善後）:
       '各画像で完結しつつ連続性も持たせる',
       'ファイルサイズに注意',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['thread-01', 'value-01', 'cta-03'],
     difficulty: 'intermediate',
     expectedEngagement: {

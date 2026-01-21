@@ -41,7 +41,7 @@ export const valueTemplates: Template[] = [
       'パクリだと思われない工夫',
       '古い情報は更新して発信',
     ],
-    relatedChapters: [2, 5, 10],
+    relatedChapters: [2, 5],
     relatedTemplates: ['value-06', 'thread-01', 'engagement-04'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -88,7 +88,7 @@ export const valueTemplates: Template[] = [
       '古いツールは避ける',
       '特定ツールの過度な宣伝は避ける',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-01', 'question-06', 'thread-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -132,7 +132,7 @@ export const valueTemplates: Template[] = [
       '機密情報は絶対に漏らさない',
       '自慢話に聞こえないよう注意',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['value-01', 'story-06', 'opinion-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -179,7 +179,7 @@ API = ウェイター
       '「初心者向け」と明示',
       '上級者からの指摘に真摯に対応',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-09', 'question-01', 'thread-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -225,7 +225,7 @@ API = ウェイター
       '偉そうにならない伝え方',
       '絶対的な正解がないテーマは注意',
     ],
-    relatedChapters: [2, 6, 10],
+    relatedChapters: [2, 6],
     relatedTemplates: ['value-01', 'value-08', 'opinion-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -270,7 +270,7 @@ API = ウェイター
       '基本的すぎると価値が薄い',
       '情報の正確性を確認',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-01', 'value-02', 'thread-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -315,7 +315,7 @@ API = ウェイター
       'パクリだと思われない工夫',
       'TPOに合わせた調整の必要性を示す',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-01', 'value-08', 'thread-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -363,7 +363,7 @@ API = ウェイター
       '完璧を求めすぎない',
       '業界特有の項目は解説を加える',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['value-01', 'value-07', 'thread-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -414,7 +414,7 @@ Software as a Service の略。
       '最新の定義を確認',
       '専門家からの指摘に備える',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-04', 'question-09', 'thread-03'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -460,7 +460,7 @@ Software as a Service の略。
       '過度な煽りは信頼を失う',
       '情報源を明示できるようにする',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['news-02', 'news-03', 'opinion-02'],
     difficulty: 'advanced',
     expectedEngagement: {

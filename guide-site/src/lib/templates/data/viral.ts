@@ -73,7 +73,7 @@ Xのアルゴリズムは「いいね」より「リプライ」を重視して�
       '定番すぎるものばかりだと新鮮味がない',
       '自分が本当に価値を感じたものを選ぶ',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-02', 'thread-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -114,7 +114,7 @@ X運用の正解は「週3回の高品質投稿」だと思う。
       '攻撃的な言い方は避ける',
       '「自分の場合」という留保を付ける',
     ],
-    relatedChapters: [2, 8, 10],
+    relatedChapters: [2, 8],
     relatedTemplates: ['opinion-01', 'question-01'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -192,7 +192,7 @@ AIに「良い投稿」と判断されるかどうかで
       'センシティブな話題は避ける',
       'ウケ狙いすぎて滑らないよう注意',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['engagement-02', 'community-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -233,7 +233,7 @@ AIに「良い投稿」と判断されるかどうかで
       '片方を極端に悪く書きすぎない',
       '自分も完璧ではない謙虚さを',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['value-03', 'opinion-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -275,7 +275,7 @@ AIに「良い投稿」と判断されるかどうかで
       '自慢話にならないよう注意',
       '長すぎると離脱される',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['story-01', 'engagement-05'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -318,7 +318,7 @@ AIに「良い投稿」と判断されるかどうかで
       '既出情報ばかりだと価値が下がる',
       '長すぎると最後まで読まれない',
     ],
-    relatedChapters: [2, 6, 10],
+    relatedChapters: [2, 6],
     relatedTemplates: ['value-04', 'thread-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -357,7 +357,7 @@ AIに「良い投稿」と判断されるかどうかで
       '攻撃的になりすぎない',
       '解決策がない批判は避ける',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['opinion-03', 'community-02'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -400,7 +400,7 @@ AIに「良い投稿」と判断されるかどうかで
       '予告だけで終わらせない',
       '頻繁に使うと効果が薄れる',
     ],
-    relatedChapters: [2, 8, 10],
+    relatedChapters: [2, 8],
     relatedTemplates: ['cta-01', 'engagement-03'],
     difficulty: 'intermediate',
     expectedEngagement: {

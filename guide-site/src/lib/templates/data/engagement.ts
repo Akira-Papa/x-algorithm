@@ -37,7 +37,7 @@ export const engagementTemplates: Template[] = [
       '説教臭くならないよう学びは控えめに',
       '架空の話は避け、実体験を元にする',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['engagement-05', 'engagement-07', 'story-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -78,7 +78,7 @@ export const engagementTemplates: Template[] = [
       'ニッチすぎる業界ネタは共感を得にくい',
       '愚痴っぽくなりすぎないよう注意',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['engagement-10', 'community-01', 'opinion-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -124,7 +124,7 @@ export const engagementTemplates: Template[] = [
       '頻繁すぎる感謝投稿は逆効果',
       '義務的な感じを出さない',
     ],
-    relatedChapters: [2, 10, 11, 12],
+    relatedChapters: [2, 10, 11],
     relatedTemplates: ['engagement-04', 'personal-01', 'community-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -174,7 +174,7 @@ export const engagementTemplates: Template[] = [
       '再現性のない方法は書かない',
       '運や環境要因も正直に認める',
     ],
-    relatedChapters: [2, 10, 11, 12],
+    relatedChapters: [2, 10, 11],
     relatedTemplates: ['engagement-03', 'engagement-06', 'value-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -224,7 +224,7 @@ export const engagementTemplates: Template[] = [
       '深刻すぎる失敗は避ける',
       '改善策なしの愚痴にならない',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['engagement-01', 'story-02', 'value-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -273,7 +273,7 @@ After（2024年1月）
       '運や環境要因も正直に',
       '比較項目は検証可能なものに',
     ],
-    relatedChapters: [2, 10, 11, 12],
+    relatedChapters: [2, 10, 11],
     relatedTemplates: ['engagement-04', 'viral-02', 'value-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -317,7 +317,7 @@ After（2024年1月）
       '説教臭くならないよう注意',
       '気づきを押し付けない',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['engagement-01', 'story-01', 'personal-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -363,7 +363,7 @@ After（2024年1月）
       '頻繁すぎると軽く見える',
       '自分もしんどい時に無理して書かない',
     ],
-    relatedChapters: [2, 8, 10, 11],
+    relatedChapters: [2, 8, 10],
     relatedTemplates: ['engagement-03', 'personal-01', 'community-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -412,7 +412,7 @@ After（2024年1月）
       '無理やりな便乗は避ける',
       '他の人と被りやすいので独自の視点を',
     ],
-    relatedChapters: [2, 8, 10],
+    relatedChapters: [2, 8],
     relatedTemplates: ['engagement-08', 'timing-01', 'news-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -460,7 +460,7 @@ After（2024年1月）
       'センシティブな話題は使わない',
       'ウケ狙いすぎると寒くなる',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['engagement-02', 'viral-05', 'community-01'],
     difficulty: 'intermediate',
     expectedEngagement: {

@@ -44,7 +44,7 @@ export const opinionTemplates: Template[] = [
       '他者を否定する表現は控えめに',
       '炎上リスクのあるテーマは慎重に',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['engagement-03', 'question-01', 'value-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -91,7 +91,7 @@ export const opinionTemplates: Template[] = [
       '特定の人物やアカウントを名指ししない',
       'データの捏造や誇張は絶対にNG',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['opinion-01', 'engagement-05', 'question-02'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -143,7 +143,7 @@ export const opinionTemplates: Template[] = [
       '実現不可能な理想論にならないよう注意',
       '自分で実践していないことは提案しない',
     ],
-    relatedChapters: [10, 11, 12],
+    relatedChapters: [10, 11],
     relatedTemplates: ['value-01', 'thread-02', 'cta-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -197,7 +197,7 @@ export const opinionTemplates: Template[] = [
       'ステマと疑われないよう正直に',
       '古い情報でレビューしない',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['value-03', 'question-03', 'engagement-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -250,7 +250,7 @@ export const opinionTemplates: Template[] = [
       '過度に悲観的・楽観的な予測は避ける',
       '予測が外れた時のフォローも考慮',
     ],
-    relatedChapters: [7, 10, 12],
+    relatedChapters: [7, 11],
     relatedTemplates: ['opinion-01', 'question-01', 'news-02'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -299,7 +299,7 @@ export const opinionTemplates: Template[] = [
       '他者の価値観を否定しない',
       '自慢話にならないようバランスを取る',
     ],
-    relatedChapters: [10, 11, 12],
+    relatedChapters: [10, 11],
     relatedTemplates: ['story-01', 'personal-02', 'engagement-03'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -351,7 +351,7 @@ export const opinionTemplates: Template[] = [
       '批判だけで終わらない',
       '感情的にならず冷静に',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['opinion-08', 'question-01', 'engagement-05'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -403,7 +403,7 @@ export const opinionTemplates: Template[] = [
       '自分が実践して効果があったものを紹介',
       '万能薬のような表現は避ける',
     ],
-    relatedChapters: [8, 10, 12],
+    relatedChapters: [8, 11],
     relatedTemplates: ['opinion-03', 'value-01', 'thread-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -456,7 +456,7 @@ export const opinionTemplates: Template[] = [
       '愚痴で終わらせず建設的に',
       '業界の悪口に聞こえないよう注意',
     ],
-    relatedChapters: [7, 10, 11],
+    relatedChapters: [7, 10],
     relatedTemplates: ['opinion-07', 'story-03', 'personal-01'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -507,7 +507,7 @@ export const opinionTemplates: Template[] = [
       '断定的すぎる表現は炎上リスク',
       '特定の属性を攻撃しない',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['opinion-07', 'question-01', 'news-01'],
     difficulty: 'advanced',
     expectedEngagement: {

@@ -41,7 +41,7 @@ export const ctaTemplates: Template[] = [
       '頻繁に使いすぎると押し売り感が出る',
       '誇大表現は避ける',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-03', 'value-01', 'value-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -84,7 +84,7 @@ export const ctaTemplates: Template[] = [
       'リンク先の内容と投稿の内容を一致させる',
       'アフィリエイトリンクは信頼を損なうリスクあり',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-06', 'cta-07', 'value-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -213,7 +213,7 @@ export const ctaTemplates: Template[] = [
       '個人情報の取り扱いに注意',
       '営業臭が強すぎると避けられる',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-06', 'cta-09', 'question-05'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -260,7 +260,7 @@ LINE登録者に無料で配布しています。
       '頻繁な誘導は敬遠される',
       'LINEの規約に違反しないよう注意',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-02', 'cta-05', 'value-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -308,7 +308,7 @@ LINE登録者に無料で配布しています。
       '誇大広告は景品表示法違反のリスク',
       '購入者へのサポートは誠実に対応する',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-02', 'cta-08', 'cta-10'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -357,7 +357,7 @@ LINE登録者に無料で配布しています。
       '告知は複数回に分けて行う',
       'リマインドも忘れずに送る',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-09', 'community-07', 'engagement-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -405,7 +405,7 @@ LINE登録者に無料で配布しています。
       '条件が緩すぎると質が下がる',
       '約束した条件は必ず守る',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-05', 'community-02', 'community-09'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -454,7 +454,7 @@ DMで「コンサル希望」と
       '嘘の期限や数量は絶対にNG',
       '割引後の価格が適正か確認する',
     ],
-    relatedChapters: [4, 6, 10],
+    relatedChapters: [4, 6],
     relatedTemplates: ['cta-07', 'cta-08', 'viral-07'],
     difficulty: 'advanced',
     expectedEngagement: {

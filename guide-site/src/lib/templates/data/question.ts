@@ -35,7 +35,7 @@ export const questionTemplates: Template[] = [
       '答えに時間がかかる質問は避ける',
       'センシティブなテーマは炎上リスクあり',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['question-04', 'question-05', 'engagement-03'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -76,7 +76,7 @@ export const questionTemplates: Template[] = [
       '二択以外の回答が来ても柔軟に対応',
       '結論を押し付けない',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['question-03', 'question-07', 'engagement-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -118,7 +118,7 @@ export const questionTemplates: Template[] = [
       'ネタ選択肢を入れすぎない',
       '結果を放置せず必ず共有する',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['question-02', 'community-02', 'engagement-02'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -159,7 +159,7 @@ export const questionTemplates: Template[] = [
       'リプライには丁寧に返信',
       '議論が過熱したら仲裁役に',
     ],
-    relatedChapters: [2, 7, 10],
+    relatedChapters: [2, 7],
     relatedTemplates: ['question-01', 'question-07', 'opinion-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -198,7 +198,7 @@ export const questionTemplates: Template[] = [
       '特定の企業や人物を批判する流れは止める',
       '体験談は引用時に許可を取る',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['question-01', 'story-01', 'community-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -239,7 +239,7 @@ export const questionTemplates: Template[] = [
       'まとめ投稿は著作権に注意',
       '特定の製品を悪く言う流れは避ける',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['value-02', 'question-01', 'thread-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -280,7 +280,7 @@ export const questionTemplates: Template[] = [
       '引けない主張はしない',
       '議論が過熱したら適切に収束',
     ],
-    relatedChapters: [2, 6, 10],
+    relatedChapters: [2, 6],
     relatedTemplates: ['question-04', 'opinion-03', 'viral-03'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -324,7 +324,7 @@ export const questionTemplates: Template[] = [
       '専門家を馬鹿にしない',
       '議論から学ぶ姿勢が大切',
     ],
-    relatedChapters: [2, 10, 12],
+    relatedChapters: [2, 11],
     relatedTemplates: ['question-04', 'value-01', 'opinion-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -368,7 +368,7 @@ D) git reset --message
       '正解は必ず発表する',
       '間違った人を馬鹿にしない',
     ],
-    relatedChapters: [2, 10],
+    relatedChapters: [2],
     relatedTemplates: ['value-09', 'engagement-02', 'community-03'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -409,7 +409,7 @@ D) git reset --message
       '特定の人や会社を批判しない',
       'アドバイスを全部実行する必要はない',
     ],
-    relatedChapters: [2, 10, 11],
+    relatedChapters: [2, 10],
     relatedTemplates: ['question-05', 'story-02', 'personal-01'],
     difficulty: 'intermediate',
     expectedEngagement: {

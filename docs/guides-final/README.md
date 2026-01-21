@@ -39,9 +39,9 @@
 
 | 章 | タイトル | 概要 |
 |---|---------|------|
-| [第10章](./chapter-10-templates.md) | 実践投稿テンプレートと成功パターン | 5種類の投稿テンプレート |
-| [第11章](./chapter-11-branding.md) | アカウント設計とブランディング | アカウント全体の最適化 |
-| [第12章](./chapter-12-analytics.md) | データ分析と継続的改善 | KPI設計とPDCAサイクル |
+| [第10章](./chapter-10-branding.md) | アカウント設計とブランディング | Trust ScoreとTopical Authority |
+| [第11章](./chapter-11-analytics.md) | データ分析と継続的改善 | KPI設計とPDCAサイクル |
+| [第12章](./chapter-12-roadmap.md) | 総まとめと実践ロードマップ | チェックリストとフェーズ別戦略 |
 
 ---
 

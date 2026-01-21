@@ -51,7 +51,7 @@ export const videoTemplates: Template[] = [
       '音声がなくても理解できるようテロップを入れる',
       '画質や音質に最低限の配慮を',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['value-01', 'visual-01', 'thread-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -104,7 +104,7 @@ After: 現在の状態
       '他者の変化は許可を得てから',
       '期待値を上げすぎない表現に',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['visual-03', 'story-02', 'cta-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -154,7 +154,7 @@ After: 現在の状態
       '手元がブレないよう固定',
       '著作権のある音楽は使わない',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['visual-08', 'story-02', 'thread-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -210,7 +210,7 @@ After: 現在の状態
       '音声なしでも理解できるようテロップを',
       '古い情報にならないよう定期的に更新',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['visual-04', 'value-01', 'thread-02'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -260,7 +260,7 @@ After: 現在の状態
       '自慢にならないようバランスを',
       '頻繁にやりすぎない',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['personal-01', 'story-01', 'engagement-01'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -317,7 +317,7 @@ After: 現在の状態
       '整理されすぎた映像は不自然',
       '愚痴にならないようバランスを',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['story-01', 'personal-02', 'visual-08'],
     difficulty: 'beginner',
     expectedEngagement: {
@@ -370,7 +370,7 @@ A: 「まずは1つのプラットフォームに集中。
       '編集で発言を歪めない',
       '両者のフォロワーに価値ある内容に',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['community-03', 'cta-01', 'thread-01'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -425,7 +425,7 @@ A: 「まずは1つのプラットフォームに集中。
       'デメリットも正直に伝える',
       'ステマにならないよう注意',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['opinion-04', 'value-03', 'cta-01'],
     difficulty: 'intermediate',
     expectedEngagement: {
@@ -481,7 +481,7 @@ A: 「まずは1つのプラットフォームに集中。
       '自慢話にならないよう注意',
       '頻度は控えめに（特別な時だけ）',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['story-01', 'personal-01', 'engagement-03'],
     difficulty: 'advanced',
     expectedEngagement: {
@@ -548,7 +548,7 @@ A: 「まずは1つのプラットフォームに集中。
       '時間変更や中止は必ず告知',
       'アーカイブの公開範囲を確認',
     ],
-    relatedChapters: [9, 10, 11],
+    relatedChapters: [9, 10],
     relatedTemplates: ['cta-01', 'community-01', 'timing-02'],
     difficulty: 'intermediate',
     expectedEngagement: {

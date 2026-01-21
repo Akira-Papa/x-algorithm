@@ -3,19 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  ShieldCheckIcon,
-  StarIcon,
-  UserCircleIcon,
-  PhotoIcon,
-  PencilSquareIcon,
-  AtSymbolIcon,
-  DocumentTextIcon,
-  BookmarkSquareIcon,
-  ChevronDownIcon,
   CheckIcon,
-  XMarkIcon,
+  ClockIcon,
+  ChartBarIcon,
+  ArrowPathIcon,
+  LightBulbIcon,
   ExclamationTriangleIcon,
-  ChartPieIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  TableCellsIcon,
+  CalendarDaysIcon,
+  RocketLaunchIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import { Quiz, type QuizQuestion } from "@/components/ui/Quiz";
@@ -23,232 +21,175 @@ import { FAQ, type FAQItem } from "@/components/ui/Accordion";
 import { ChapterNav } from "@/components/ui/ChapterNav";
 import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
-// Section Header Component
-function SectionHeader({ number, title }: { number: string; title: string }) {
-  return (
-    <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-purple-600">
-      <div className="flex items-center justify-center w-12 h-12 bg-purple-600 text-white rounded-lg font-bold text-lg">
-        {number}
-      </div>
-      <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-        {title}
-      </h2>
-    </div>
-  );
-}
-
-// Info Box Component
-function InfoBox({
+// KPI Table Component
+function KPITable({
   title,
-  icon: Icon,
-  color,
-  children,
+  items,
+  frequency,
+  colorClass
 }: {
   title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: 'blue' | 'green' | 'purple' | 'orange';
-  children: React.ReactNode;
+  items: { name: string; description: string; target: string }[];
+  frequency: string;
+  colorClass: string;
 }) {
-  const colorClasses = {
-    blue: { bg: 'bg-blue-600', light: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800' },
-    green: { bg: 'bg-green-600', light: 'bg-green-50 dark:bg-green-900/20', border: 'border-green-200 dark:border-green-800' },
-    purple: { bg: 'bg-purple-600', light: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800' },
-    orange: { bg: 'bg-orange-600', light: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-200 dark:border-orange-800' },
-  };
-
-  const styles = colorClasses[color];
-
   return (
-    <div className={`rounded-xl border-2 ${styles.border} overflow-hidden`}>
-      <div className={`${styles.bg} px-5 py-3 flex items-center gap-3`}>
-        <Icon className="w-6 h-6 text-white" />
-        <h4 className="font-bold text-white">{title}</h4>
+    <div className="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+      <div className={`px-6 py-4 ${colorClass} flex items-center justify-between`}>
+        <div className="flex items-center gap-3">
+          <ChartBarIcon className="w-6 h-6" />
+          <h4 className="font-bold text-lg">{title}</h4>
+        </div>
+        <span className="text-sm opacity-80">{frequency}</span>
       </div>
-      <div className="p-5">{children}</div>
-    </div>
-  );
-}
-
-// Profile Card Component
-function ProfileCard({
-  type,
-  content,
-  note,
-}: {
-  type: 'good' | 'bad';
-  content: string[];
-  note?: string;
-}) {
-  const isGood = type === 'good';
-
-  return (
-    <div className={`rounded-xl border-2 overflow-hidden ${
-      isGood ? 'border-green-500' : 'border-red-500'
-    }`}>
-      <div className={`px-4 py-2 flex items-center gap-2 ${
-        isGood ? 'bg-green-500' : 'bg-red-500'
-      } text-white`}>
-        {isGood ? (
-          <CheckIcon className="w-5 h-5" />
-        ) : (
-          <XMarkIcon className="w-5 h-5" />
-        )}
-        <span className="font-bold">{isGood ? '良い例' : '悪い例'}</span>
-      </div>
-      <div className="p-4 bg-white dark:bg-zinc-800">
-        {content.map((line, idx) => (
-          <p key={idx} className="text-zinc-700 dark:text-zinc-300 text-sm mb-1 last:mb-0">
-            {line}
-          </p>
-        ))}
-        {note && (
-          <p className={`text-xs mt-3 ${isGood ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-            {note}
-          </p>
-        )}
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-zinc-50 dark:bg-zinc-900/50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider">指標</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider">説明</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider">目標</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
+            {items.map((item, index) => (
+              <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                <td className="px-6 py-4 text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.name}</td>
+                <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">{item.description}</td>
+                <td className="px-6 py-4 text-sm font-semibold text-emerald-600 dark:text-emerald-400">{item.target}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
 
-// Checklist Component
-function Checklist({ title, items, icon: Icon }: {
-  title: string;
+// PDCA Step Component
+function PDCAStep({
+  name,
+  nameJa,
+  items,
+  colorClass,
+  isActive,
+  onClick
+}: {
+  name: string;
+  nameJa: string;
   items: string[];
-  icon: React.ComponentType<{ className?: string }>;
+  colorClass: string;
+  isActive: boolean;
+  onClick: () => void;
 }) {
-  const [checked, setChecked] = useState<boolean[]>(new Array(items.length).fill(false));
-
-  const toggleItem = (index: number) => {
-    const newChecked = [...checked];
-    newChecked[index] = !newChecked[index];
-    setChecked(newChecked);
-  };
-
-  const progress = (checked.filter(Boolean).length / items.length) * 100;
-
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl border-2 border-zinc-200 dark:border-zinc-700 overflow-hidden">
-      <div className="bg-zinc-100 dark:bg-zinc-700 px-5 py-3 border-b border-zinc-200 dark:border-zinc-600">
-        <div className="flex items-center justify-between">
-          <h4 className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <Icon className="w-5 h-5" />
-            {title}
-          </h4>
-          <span className="text-sm text-zinc-500">{checked.filter(Boolean).length}/{items.length}</span>
+    <div
+      className={`rounded-lg border-2 transition-all cursor-pointer ${
+        isActive ? `${colorClass} shadow-lg` : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300'
+      }`}
+      onClick={onClick}
+    >
+      <div className={`px-4 py-3 ${isActive ? 'bg-white/10' : ''}`}>
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-bold text-lg">{name}</span>
+          <span className="text-sm opacity-70">{nameJa}</span>
         </div>
-        <div className="h-1.5 bg-zinc-200 dark:bg-zinc-600 rounded-full mt-2 overflow-hidden">
-          <div
-            className="h-full bg-green-500 transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
-      <div className="p-4 space-y-2">
-        {items.map((item, idx) => (
-          <label
-            key={idx}
-            className="flex items-start gap-3 p-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700/50 cursor-pointer transition-colors"
-          >
-            <input
-              type="checkbox"
-              checked={checked[idx]}
-              onChange={() => toggleItem(idx)}
-              className="w-5 h-5 rounded border-zinc-300 text-green-500 focus:ring-green-500 mt-0.5"
-            />
-            <span className={`text-sm ${checked[idx] ? 'text-zinc-400 line-through' : 'text-zinc-700 dark:text-zinc-300'}`}>
-              {item}
-            </span>
-          </label>
-        ))}
+        {isActive && (
+          <ul className="space-y-1 text-sm mt-3">
+            {items.map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <CheckIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
 }
 
-// Theme Distribution Chart
-function ThemeDistributionChart() {
-  const themes = [
-    { name: 'メインテーマ1', percent: 40, color: 'bg-blue-500' },
-    { name: 'メインテーマ2', percent: 25, color: 'bg-indigo-500' },
-    { name: 'メインテーマ3', percent: 15, color: 'bg-purple-500' },
-    { name: 'サブテーマ', percent: 20, color: 'bg-zinc-400' },
-  ];
-
+// Analysis Schedule Card
+function ScheduleCard({
+  period,
+  time,
+  timing,
+  tasks,
+  colorClass
+}: {
+  period: string;
+  time: string;
+  timing: string;
+  tasks: string[];
+  colorClass: string;
+}) {
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl border-2 border-zinc-200 dark:border-zinc-700 overflow-hidden">
-      <div className="bg-zinc-100 dark:bg-zinc-700 px-5 py-3 border-b border-zinc-200 dark:border-zinc-600">
-        <h4 className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <ChartPieIcon className="w-5 h-5" />
-          推奨テーマ配分
-        </h4>
-      </div>
-      <div className="p-5 space-y-4">
-        {themes.map((theme, idx) => (
-          <div key={idx}>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-zinc-700 dark:text-zinc-300 font-medium">{theme.name}</span>
-              <span className="text-zinc-500">{theme.percent}%</span>
-            </div>
-            <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded h-4 overflow-hidden">
-              <div
-                className={`${theme.color} h-4 rounded transition-all duration-500`}
-                style={{ width: `${theme.percent}%` }}
-              />
-            </div>
-          </div>
-        ))}
-        <p className="text-xs text-zinc-500 mt-4">
-          ※ メインテーマ3つで80%、サブテーマで20%の配分が理想的
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// Profile Elements
-function ProfileElements() {
-  const elements = [
-    { icon: PhotoIcon, title: 'アイコン画像', desc: '顔写真 or 認識しやすいロゴ' },
-    { icon: PhotoIcon, title: 'ヘッダー画像', desc: '専門性やブランドを表現' },
-    { icon: PencilSquareIcon, title: '表示名', desc: '覚えやすく、検索されやすい' },
-    { icon: AtSymbolIcon, title: 'ユーザー名', desc: 'シンプルで覚えやすい' },
-    { icon: DocumentTextIcon, title: '自己紹介文(160字)', desc: '何者か、何を発信するか' },
-    { icon: BookmarkSquareIcon, title: '固定ツイート', desc: '最も見せたい投稿' },
-  ];
-
-  return (
-    <div className="grid md:grid-cols-2 gap-4">
-      {elements.map((item, idx) => (
-        <div key={idx} className="bg-white dark:bg-zinc-800 rounded-xl p-4 border-2 border-zinc-200 dark:border-zinc-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-              <item.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h4 className="font-bold text-zinc-900 dark:text-zinc-100">{item.title}</h4>
-          </div>
-          <p className="text-zinc-600 dark:text-zinc-400 text-sm">{item.desc}</p>
+    <div className="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+      <div className={`px-5 py-4 ${colorClass}`}>
+        <h4 className="font-bold text-lg">{period}分析</h4>
+        <div className="flex items-center gap-3 mt-1 text-sm opacity-80">
+          <span className="flex items-center gap-1">
+            <ClockIcon className="w-4 h-4" />
+            {time}
+          </span>
+          <span>|</span>
+          <span>{timing}</span>
         </div>
-      ))}
+      </div>
+      <div className="p-5">
+        <ul className="space-y-2">
+          {tasks.map((task, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <TableCellsIcon className="w-4 h-4 mt-0.5 flex-shrink-0 text-zinc-400" />
+              {task}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
 
-// Warning Box
-function WarningBox({ items }: { items: string[] }) {
+// Growth Phase Component
+function GrowthPhase({
+  phase,
+  followers,
+  period,
+  focus,
+  strategy,
+  kpi,
+  colorClass
+}: {
+  phase: string;
+  followers: string;
+  period: string;
+  focus: string;
+  strategy: string;
+  kpi: string;
+  colorClass: string;
+}) {
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl border-2 border-red-300 dark:border-red-800 overflow-hidden">
-      <div className="bg-red-500 px-5 py-3 flex items-center gap-3">
-        <ExclamationTriangleIcon className="w-6 h-6 text-white" />
-        <h4 className="font-bold text-white">避けるべきこと</h4>
+    <div className="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-5">
+      <div className="flex items-center gap-3 mb-4">
+        <span className={`px-3 py-1 rounded-full text-white text-sm font-medium ${colorClass}`}>
+          {phase}
+        </span>
+        <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{followers}フォロワー</span>
+        <span className="text-sm text-zinc-500">({period})</span>
       </div>
-      <div className="p-5 grid md:grid-cols-2 gap-3">
-        {items.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-2 text-red-700 dark:text-red-400">
-            <XMarkIcon className="w-5 h-5 flex-shrink-0" />
-            <span className="text-sm">{item}</span>
-          </div>
-        ))}
+      <div className="grid sm:grid-cols-3 gap-4 text-sm">
+        <div>
+          <span className="text-xs font-semibold text-zinc-500 uppercase">重点</span>
+          <p className="text-zinc-700 dark:text-zinc-300 mt-1">{focus}</p>
+        </div>
+        <div>
+          <span className="text-xs font-semibold text-zinc-500 uppercase">戦略</span>
+          <p className="text-zinc-700 dark:text-zinc-300 mt-1">{strategy}</p>
+        </div>
+        <div>
+          <span className="text-xs font-semibold text-zinc-500 uppercase">KPI</span>
+          <p className={`font-semibold mt-1 ${colorClass.replace('bg-', 'text-')}`}>{kpi}</p>
+        </div>
       </div>
     </div>
   );
@@ -257,24 +198,64 @@ function WarningBox({ items }: { items: string[] }) {
 // FAQ Data
 const faqData: FAQItem[] = [
   {
-    question: 'Trust Scoreとは？',
-    answer: 'Trust Score（信頼スコア）は、アカウントの信頼性を示す指標です。アカウント年齢、認証状態、プロフィール完成度、通報・ブロック履歴、エンゲージメント品質などから算出されます。'
+    question: 'プライマリKPIとは？',
+    answer: `プライマリKPIは、最も重要な指標で毎週必ず確認すべきものです。
+
+1. インプレッション/投稿 - 目標: フォロワー数の10-20%以上
+2. エンゲージメント率 - 目標: 3-5%以上
+3. フォロワー純増数 - 目標: 週50人以上(1,000フォロワー以下の場合)
+4. プロフィールクリック率 - 目標: 0.5%以上`
   },
   {
-    question: 'Topical Authorityとは？',
-    answer: 'Topical Authority（専門性スコア）は、特定分野における専門性を示す指標です。特定トピックでの継続的な投稿、同分野の専門家からの反応、引用・言及される頻度などから算出されます。'
+    question: '週次分析で確認することは？',
+    answer: `週次分析（所要時間30分）で確認すべきこと：
+
+・週間インプレッション合計
+・週間エンゲージメント率
+・フォロワー純増数
+・最も成功した投稿TOP3の分析
+・最も反応が悪かった投稿の分析
+・投稿パターンの振り返り
+
+分析の観点: 時間帯、テーマ、形式、文字数、メディアの効果を比較します。`
   },
   {
-    question: 'プロフィール最適化のポイントは？',
-    answer: '3つのポイント：(1) 何者かを明確に - 肩書き・実績を1行目に、(2) 何を発信するかを明示 - フォローする理由を示す、(3) フォローのメリットを伝える - 具体的な価値提供を約束。'
+    question: 'PDCAサイクルの回し方は？',
+    answer: `X運用におけるPDCAサイクル：
+
+【Plan】週の始めに: 投稿テーマ決定、スケジュール作成、目標設定（数値で）
+
+【Do】計画に沿って: スケジュール通りに投稿、リプライに返信、異常があれば記録
+
+【Check】週末に: 目標達成度、計画と実績の差分、成功/失敗投稿の分析
+
+【Act】次週への反映: 成功パターン継続、失敗パターン排除、戦略修正`
   },
   {
-    question: 'テーマを絞る理由は？',
-    answer: 'テーマを絞ることでTopical Authorityが向上し、アルゴリズムから専門家として認識されやすくなります。メインテーマは3つ以内、投稿の80%をメインテーマに集中させましょう。'
+    question: '成功パターンの見つけ方は？',
+    answer: `成功パターン特定の5ステップ：
+
+1. 上位投稿を抽出（インプレッションorエンゲージメント上位10%）
+2. 共通点を分析（投稿時間、曜日、テーマ、形式、文字数、メディア、冒頭の言葉）
+3. 仮説を立てる（「〜だから成功した」）
+4. 検証する（同じパターンで投稿して結果確認）
+5. パターンとして蓄積（再現性が確認できたら登録）`
   },
   {
-    question: '相互作用で避けるべきことは？',
-    answer: '避けるべき行為：大量フォロー/アンフォロー、同じ内容の大量リプライ、無関係な投稿への大量いいね、他者を攻撃するリプライ、炎上に乗じた批判、リプライでの無関係な自己宣伝。'
+    question: '長期成長のフェーズ分けは？',
+    answer: `フォロワー数別の4つのフェーズ：
+
+【Phase 1】0-1,000フォロワー（3-6ヶ月）
+基盤構築期。ニッチ特化、濃い関係構築。
+
+【Phase 2】1,000-5,000フォロワー（6-12ヶ月）
+成長期。OON到達開始、成功パターンの横展開。
+
+【Phase 3】5,000-10,000フォロワー（6-12ヶ月）
+拡大期。影響力の確立、テーマの少し拡大。
+
+【Phase 4】10,000+フォロワー（継続）
+確立期。持続可能な運用、ブランド化。`
   }
 ];
 
@@ -282,351 +263,370 @@ const faqData: FAQItem[] = [
 const quizQuestions: QuizQuestion[] = [
   {
     id: 1,
-    question: 'Xのアルゴリズムがアカウントを評価する2つの軸は？',
+    question: 'エンゲージメント率の目標値は何%以上ですか？',
     choices: [
-      { id: 'A', text: 'フォロワー数とインプレッション数' },
-      { id: 'B', text: 'Trust ScoreとTopical Authority' },
-      { id: 'C', text: 'エンゲージメント率とリーチ数' },
-      { id: 'D', text: '投稿頻度とコンテンツ品質' },
+      { id: 'A', text: '1-2%' },
+      { id: 'B', text: '3-5%' },
+      { id: 'C', text: '7-10%' },
+      { id: 'D', text: '15%以上' },
     ],
     correctAnswer: 'B',
-    explanation: 'Xのアルゴリズムは「Trust Score（信頼スコア）」と「Topical Authority（専門性スコア）」の2つの軸でアカウントを評価しています。'
+    explanation: 'エンゲージメント率の目標は3-5%以上です。計算式は (いいね+RT+リプライ) / インプレッション × 100 です。',
   },
   {
     id: 2,
-    question: 'メインテーマは何個以内に絞ることが推奨されていますか？',
+    question: '週次分析に推奨される時間は何分ですか？',
     choices: [
-      { id: 'A', text: '1つ以内' },
-      { id: 'B', text: '2つ以内' },
-      { id: 'C', text: '3つ以内' },
-      { id: 'D', text: '5つ以内' },
+      { id: 'A', text: '5分' },
+      { id: 'B', text: '15分' },
+      { id: 'C', text: '30分' },
+      { id: 'D', text: '1時間' },
     ],
     correctAnswer: 'C',
-    explanation: 'メインテーマは3つ以内に絞ることが推奨されています。これにより一貫性が保たれ、Topical Authorityが向上します。'
+    explanation: '週次分析には30分が推奨されています。日次分析は5分、月次分析は1時間が目安です。',
   },
   {
     id: 3,
-    question: '投稿の何%をメインテーマに集中させるべきですか？',
+    question: 'PDCAサイクルの最初のステップは何ですか？',
     choices: [
-      { id: 'A', text: '50%' },
-      { id: 'B', text: '60%' },
-      { id: 'C', text: '70%' },
-      { id: 'D', text: '80%' },
+      { id: 'A', text: 'Do（実行）' },
+      { id: 'B', text: 'Check（検証）' },
+      { id: 'C', text: 'Act（改善）' },
+      { id: 'D', text: 'Plan（計画）' },
     ],
     correctAnswer: 'D',
-    explanation: '投稿の80%をメインテーマに集中させ、残り20%は関連テーマや日常の投稿に充てることが推奨されています。'
+    explanation: 'PDCAサイクルはPlan（計画）から始まります。週の始めに投稿テーマ決定、スケジュール作成、目標設定を行います。',
   },
   {
     id: 4,
-    question: '自己紹介文の最大文字数は何字ですか？',
+    question: 'Phase 1（基盤構築期）の終了目安は何フォロワーですか？',
     choices: [
-      { id: 'A', text: '100字' },
-      { id: 'B', text: '140字' },
-      { id: 'C', text: '160字' },
-      { id: 'D', text: '200字' },
+      { id: 'A', text: '500フォロワー' },
+      { id: 'B', text: '1,000フォロワー' },
+      { id: 'C', text: '3,000フォロワー' },
+      { id: 'D', text: '5,000フォロワー' },
     ],
-    correctAnswer: 'C',
-    explanation: '自己紹介文は160字以内で、「何者か」「何を発信するか」「フォローのメリット」を簡潔に伝えることが重要です。'
+    correctAnswer: 'B',
+    explanation: 'Phase 1（基盤構築期）は0-1,000フォロワーの期間です。INエンゲージメント構築に重点を置き、ニッチ特化で濃い関係を作ります。',
   },
   {
     id: 5,
-    question: '固定ツイートの推奨される見直し頻度は？',
+    question: '健全性KPI（ネガティブエンゲージメント率など）の確認頻度は？',
     choices: [
       { id: 'A', text: '毎日' },
-      { id: 'B', text: '週1回' },
-      { id: 'C', text: '月1回' },
-      { id: 'D', text: '四半期に1回' },
+      { id: 'B', text: '毎週' },
+      { id: 'C', text: '毎月' },
+      { id: 'D', text: '四半期' },
     ],
-    correctAnswer: 'C',
-    explanation: '固定ツイートは月1回は見直すことが推奨されています。より良い投稿があれば入れ替え、季節やトレンドに合わせて調整しましょう。'
-  }
+    correctAnswer: 'D',
+    explanation: '健全性KPIは四半期ごとに確認します。ネガティブエンゲージメント率、フォロー/アンフォロー比率、IN vs OON比率などを追跡します。',
+  },
 ];
 
-export default function Chapter11() {
-  const trustScoreChecklist = [
-    'プロフィールを100%完成させる',
-    '電話番号・メールアドレスを確認済みにする',
-    'プロフィール画像を設定する',
-    'ヘッダー画像を設定する',
-    '自己紹介文を充実させる',
-    '一貫した投稿パターンを維持',
-    'ガイドラインを遵守',
-    'スパム的行為を避ける'
+export default function Chapter11Page() {
+  const [activePDCA, setActivePDCA] = useState<number | null>(null);
+
+  const primaryKPIs = [
+    { name: 'インプレッション/投稿', description: '1投稿あたり何人に表示されたか', target: 'フォロワー数の10-20%以上' },
+    { name: 'エンゲージメント率', description: '(いいね+RT+リプライ) / インプレッション', target: '3-5%以上' },
+    { name: 'フォロワー純増数', description: '新規フォロー - アンフォロー', target: '週50人以上' },
+    { name: 'プロフィールクリック率', description: 'インプレッションに対するプロフクリック割合', target: '0.5%以上' },
   ];
 
-  const topicalAuthorityChecklist = [
-    'メインテーマを3つ以内に絞る',
-    '投稿の80%をメインテーマに集中',
-    'プロフィールで専門分野を明示',
-    '固定ツイートで専門性をアピール',
-    '深い洞察を含む投稿をする',
-    '具体的な数字・事例を含める',
-    '業界の最新動向にコメント',
-    '同分野のアカウントと交流する'
+  const secondaryKPIs = [
+    { name: 'リプライ率', description: '投稿あたりのリプライ数', target: '1%以上' },
+    { name: '動画VQV率', description: '動画視聴者のVQV条件達成割合', target: '40%以上' },
+    { name: 'ブックマーク率', description: '投稿あたりのブックマーク数', target: '0.1%以上' },
+    { name: 'フォロー転換率', description: 'プロフクリックからフォローへの転換率', target: '5%以上' },
   ];
 
-  const avoidItems = [
-    'フォロワー購入',
-    'エンゲージメント購入',
-    '大量フォロー/アンフォロー',
-    '自動化ツールの乱用',
-    '複数アカウントでの自作自演'
+  const healthKPIs = [
+    { name: 'ネガティブエンゲージメント率', description: 'ミュート・ブロック・通報の発生率', target: '0.01%以下' },
+    { name: 'フォロー/アンフォロー比率', description: '新規フォローに対するアンフォロー割合', target: 'アンフォロー率20%以下' },
+    { name: 'IN vs OONエンゲージメント比率', description: 'フォロワーvs非フォロワーからの反応比率', target: 'IN70%以上（初期）' },
+    { name: 'リーチ成長率', description: '月ごとの1投稿あたりリーチ変化', target: '前月比10%以上成長' },
+  ];
+
+  const pdcaSteps = [
+    {
+      name: 'Plan',
+      nameJa: '計画',
+      items: ['今週の投稿テーマを決定', '投稿スケジュール作成', '使用テンプレート選択', '投稿時間設定', '週の目標設定（数値で）'],
+      colorClass: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200',
+    },
+    {
+      name: 'Do',
+      nameJa: '実行',
+      items: ['スケジュール通りに投稿', '計画したテンプレートを使用', 'リプライに迅速に返信', '同分野との交流を継続', '異常があれば記録'],
+      colorClass: 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200',
+    },
+    {
+      name: 'Check',
+      nameJa: '検証',
+      items: ['目標に対する達成度', '計画と実績の差分', '成功した投稿の分析', '失敗した投稿の分析', '仮説の検証'],
+      colorClass: 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200',
+    },
+    {
+      name: 'Act',
+      nameJa: '改善',
+      items: ['成功パターンの継続', '失敗パターンの排除', '新しい仮説の設定', '目標の調整', '戦略の修正'],
+      colorClass: 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200',
+    },
+  ];
+
+  const schedules = [
+    { period: '日次', time: '5分', timing: '朝の投稿前', tasks: ['前日の投稿のインプレッション', 'エンゲージメント確認', '特に反応が良い/悪い投稿の特定', 'リプライ返信漏れチェック'], colorClass: 'bg-blue-600 text-white' },
+    { period: '週次', time: '30分', timing: '週末 or 週初め', tasks: ['週間インプレッション合計', '週間エンゲージメント率', 'フォロワー純増数', 'TOP3/WORST投稿分析'], colorClass: 'bg-emerald-600 text-white' },
+    { period: '月次', time: '1時間', timing: '月初め', tasks: ['月間KPI集計', '前月比成長率計算', '成功パターン抽出', '来月の目標設定'], colorClass: 'bg-purple-600 text-white' },
+  ];
+
+  const phases = [
+    { phase: 'Phase 1', followers: '0-1,000', period: '3-6ヶ月', focus: 'INエンゲージメント構築', strategy: 'ニッチ特化、濃い関係', kpi: 'エンゲージメント率5%以上', colorClass: 'bg-blue-500' },
+    { phase: 'Phase 2', followers: '1,000-5,000', period: '6-12ヶ月', focus: 'OON到達開始', strategy: '成功パターンの横展開', kpi: '週100人以上増加', colorClass: 'bg-emerald-500' },
+    { phase: 'Phase 3', followers: '5,000-10,000', period: '6-12ヶ月', focus: '影響力の確立', strategy: 'テーマの少し拡大', kpi: 'OON比率30%以上', colorClass: 'bg-purple-500' },
+    { phase: 'Phase 4', followers: '10,000+', period: '継続', focus: '持続可能な運用', strategy: 'ブランド化、多角化', kpi: 'エンゲージメント率維持', colorClass: 'bg-pink-500' },
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
       <ChapterHeader currentChapter={11} />
 
+      {/* メインコンテンツ */}
       <main className="max-w-4xl mx-auto px-6 py-12">
-        {/* Hero Section */}
+        {/* タイトルセクション */}
         <div className="mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-sm font-medium mb-4">
-            <UserCircleIcon className="w-4 h-4" />
-            第11章
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">第11章</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 leading-tight">
-            アカウント設計とブランディング
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 leading-tight">
+            データ分析と継続的改善
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
-            個々の投稿だけでなく、アカウント全体の評価を高めて拡散力を最大化する
+            知識を成果に変換する - データに基づくPDCAサイクルで長期成長を実現
           </p>
         </div>
 
-        {/* Section 11.1 - Introduction */}
-        <section className="mb-12">
-          <SectionHeader number="11.1" title="アカウント評価の仕組み" />
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white mb-6">
-            <p className="mb-4">
-              Xのアルゴリズムは、個々の投稿だけでなく、アカウント全体も評価しています。
-              同じ内容の投稿でも、アカウントの評価が高ければより多くの人に届きます。
-            </p>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <ShieldCheckIcon className="w-8 h-8" />
-                  <div>
-                    <h3 className="font-bold">Trust Score</h3>
-                    <p className="text-white/80 text-sm">このアカウントは信頼できるか？</p>
-                  </div>
-                </div>
+        {/* なぜデータ分析が必要か */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700">
+            11.1 なぜデータ分析が必要か
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <ExclamationTriangleIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
+                <h4 className="font-semibold text-red-800 dark:text-red-300">感覚に頼る運用の問題</h4>
               </div>
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <StarIcon className="w-8 h-8" />
-                  <div>
-                    <h3 className="font-bold">Topical Authority</h3>
-                    <p className="text-white/80 text-sm">このアカウントは何の専門家か？</p>
-                  </div>
-                </div>
+              <ul className="space-y-2 text-sm text-red-700 dark:text-red-400">
+                <li className="flex items-start gap-2">
+                  <XCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>「なんとなく伸びた」で終わる</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>成功パターンを再現できない</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>失敗パターンを繰り返す</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>長期的な成長が安定しない</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <LightBulbIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-semibold text-green-800 dark:text-green-300">データに基づく運用のメリット</h4>
               </div>
+              <ul className="space-y-2 text-sm text-green-700 dark:text-green-400">
+                <li className="flex items-start gap-2">
+                  <CheckCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>成功要因を特定できる</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>再現性のある戦略を構築</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>失敗を早期に検知・修正</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>長期的な成長を実現</span>
+                </li>
+              </ul>
             </div>
           </div>
         </section>
 
-        {/* Section 11.2 - Trust Score */}
-        <section className="mb-12">
-          <SectionHeader number="11.2" title="Trust Score：信頼スコア" />
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-            Trust Score（信頼スコア）は、アカウントの信頼性を示す指標です。
-            アカウント属性と行動履歴から総合的に評価されます。
-          </p>
+        {/* KPI体系 */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center gap-2">
+            <ChartBarIcon className="w-6 h-6" />
+            11.2 追跡すべきKPI体系
+          </h2>
 
           <div className="space-y-6">
-            <InfoBox title="Trust Scoreの構成要素" icon={ShieldCheckIcon} color="blue">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-3">アカウント属性</h5>
-                  <ul className="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
-                      アカウント年齢（古いほど有利）
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
-                      認証状態（青バッジ、ゴールドバッジ等）
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
-                      プロフィールの完成度
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
-                      連絡先の確認状態
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-3">行動履歴</h5>
-                  <ul className="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      通報された回数（少ないほど良い）
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      ブロックされた回数（少ないほど良い）
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      スパム判定を受けた回数
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      アカウント凍結・制限の履歴
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </InfoBox>
-
-            <Checklist
-              title="Trust Score向上チェックリスト"
-              items={trustScoreChecklist}
-              icon={ShieldCheckIcon}
+            <KPITable
+              title="プライマリKPI"
+              items={primaryKPIs}
+              frequency="週次追跡"
+              colorClass="bg-blue-600 text-white"
             />
 
-            <WarningBox items={avoidItems} />
-          </div>
-        </section>
+            <KPITable
+              title="セカンダリKPI"
+              items={secondaryKPIs}
+              frequency="月次追跡"
+              colorClass="bg-emerald-600 text-white"
+            />
 
-        {/* Section 11.3 - Topical Authority */}
-        <section className="mb-12">
-          <SectionHeader number="11.3" title="Topical Authority：専門性スコア" />
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-            Topical Authority（専門性スコア）は、特定分野における専門性を示す指標です。
-            テーマを絞り、深い知識を継続的に発信することで向上します。
-          </p>
-
-          <div className="space-y-6">
-            <InfoBox title="Topical Authorityの構成要素" icon={StarIcon} color="green">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-3">コンテンツの一貫性</h5>
-                  <ul className="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      特定トピックでの継続的な投稿
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      投稿内容のテーマの統一性
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      専門用語の適切な使用
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      深い知識を示す投稿
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-3">ネットワーク</h5>
-                  <ul className="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      同分野のアカウントとの相互作用
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      同分野のアカウントからのフォロー
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      関連コミュニティへの参加
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </InfoBox>
-
-            <Checklist
-              title="Topical Authority向上チェックリスト"
-              items={topicalAuthorityChecklist}
-              icon={StarIcon}
+            <KPITable
+              title="健全性KPI"
+              items={healthKPIs}
+              frequency="四半期追跡"
+              colorClass="bg-purple-600 text-white"
             />
           </div>
         </section>
 
-        {/* Section 11.4 - Profile Optimization */}
-        <section className="mb-12">
-          <SectionHeader number="11.4" title="プロフィール最適化" />
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-            プロフィールは「フォローするかどうか」の判断材料です。
-            以下の6要素を最適化しましょう。
-          </p>
+        {/* 分析サイクル */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center gap-2">
+            <CalendarDaysIcon className="w-6 h-6" />
+            11.3 分析サイクルの設計
+          </h2>
 
-          <ProfileElements />
-
-          <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <ProfileCard
-              type="good"
-              content={[
-                'SaaSマーケター｜3年で0→ARR10億円を達成',
-                'Xで「SaaS成長戦略」を毎日発信中',
-                'フォローで明日から使えるグロースハックを'
-              ]}
-              note="何者か、何を発信するか、フォローのメリットが明確"
-            />
-            <ProfileCard
-              type="bad"
-              content={[
-                '色々やってます。趣味は読書と映画。',
-                '最近ハマってるのはコーヒー',
-                'よろしくお願いします！'
-              ]}
-              note="何者か不明、フォローの理由がない"
-            />
+          <div className="grid md:grid-cols-3 gap-6">
+            {schedules.map((schedule, index) => (
+              <ScheduleCard key={index} {...schedule} />
+            ))}
           </div>
         </section>
 
-        {/* Section 11.5 - Theme Distribution */}
-        <section className="mb-12">
-          <SectionHeader number="11.5" title="投稿テーマの配分" />
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-            テーマを絞ることでTopical Authorityが向上します。
-            メインテーマ3つで80%、サブテーマで20%の配分が理想的です。
+        {/* PDCAサイクル */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center gap-2">
+            <ArrowPathIcon className="w-6 h-6" />
+            11.4 PDCA for X
+          </h2>
+
+          <p className="text-zinc-600 dark:text-zinc-400 mb-6">
+            各ステップをクリックして詳細を確認してください。
           </p>
-          <ThemeDistributionChart />
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            {pdcaSteps.map((step, index) => (
+              <PDCAStep
+                key={index}
+                {...step}
+                isActive={activePDCA === index}
+                onClick={() => setActivePDCA(activePDCA === index ? null : index)}
+              />
+            ))}
+          </div>
         </section>
 
-        {/* Section 11.6 - FAQ */}
-        <section className="mb-12">
-          <SectionHeader number="11.6" title="よくある質問" />
-          <FAQ items={faqData} />
+        {/* パターン特定 */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center gap-2">
+            <LightBulbIcon className="w-6 h-6" />
+            11.5 成功/失敗パターンの特定
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+              <h4 className="font-semibold text-green-800 dark:text-green-300 mb-4 flex items-center gap-2">
+                <CheckCircleIcon className="w-5 h-5" />
+                成功パターン特定の手順
+              </h4>
+              <ol className="space-y-3 text-sm text-green-700 dark:text-green-400">
+                {['上位投稿を抽出（上位10%）', '共通点を分析（時間、テーマ、形式等）', '仮説を立てる', '検証する', 'パターンとして蓄積'].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="bg-green-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">{i + 1}</span>
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+              <h4 className="font-semibold text-red-800 dark:text-red-300 mb-4 flex items-center gap-2">
+                <XCircleIcon className="w-5 h-5" />
+                失敗パターン特定の手順
+              </h4>
+              <ol className="space-y-3 text-sm text-red-700 dark:text-red-400">
+                {['下位投稿を抽出（下位10%）', '共通点を分析', '原因を推定', '回避策を立てる', 'ブラックリストに登録'].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">{i + 1}</span>
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
         </section>
 
-        {/* Section 11.7 - Quiz */}
-        <section className="mb-12">
-          <Quiz questions={quizQuestions} />
+        {/* 長期成長ロードマップ */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center gap-2">
+            <RocketLaunchIcon className="w-6 h-6" />
+            11.6 長期成長ロードマップ
+          </h2>
+
+          <div className="space-y-4">
+            {phases.map((phase, index) => (
+              <GrowthPhase key={index} {...phase} />
+            ))}
+          </div>
         </section>
 
-        {/* Key Takeaways */}
-        <section className="mb-12">
-          <div className="bg-zinc-900 dark:bg-zinc-100 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-white dark:text-zinc-900 mb-4 flex items-center gap-2">
-              <SparklesIcon className="w-5 h-5" />
-              第11章のまとめ
-            </h3>
-            <ul className="space-y-3">
+        {/* まとめ */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700">
+            11.7 この章のまとめ
+          </h2>
+          <div className="bg-zinc-50 dark:bg-zinc-800 rounded-lg p-6">
+            <ul className="space-y-4">
               {[
-                'アカウントは Trust Score と Topical Authority で評価される',
-                'Trust Scoreは信頼性：一貫した行動、ガイドライン遵守',
-                'Topical Authorityは専門性：テーマを絞り、深い知識を示す',
-                'プロフィールはフォロー判断の決め手',
-                '一貫性がアルゴリズムに好まれる',
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-white dark:text-zinc-900">
-                  <CheckIcon className="w-5 h-5 text-green-400 dark:text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">{item}</span>
+                { title: 'データに基づく改善が長期成長の鍵', desc: '感覚ではなく数値で判断する' },
+                { title: 'KPIは3層で管理', desc: 'プライマリ（週次）、セカンダリ（月次）、健全性（四半期）' },
+                { title: 'PDCAサイクルを回す', desc: 'Plan → Do → Check → Act の継続' },
+                { title: '成功/失敗パターンを蓄積', desc: '再現性のある戦略を構築' },
+                { title: '長期視点でフェーズに応じた戦略を実行', desc: '段階的な成長を目指す' },
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckIcon className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-zinc-900 dark:text-zinc-100">{item.title}</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">{item.desc}</p>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
         </section>
 
-        {/* Navigation */}
+        {/* FAQセクション */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-2 border-b border-zinc-200 dark:border-zinc-700">
+            よくある質問（FAQ）
+          </h2>
+          <FAQ items={faqData} />
+        </section>
+
+        {/* クイズセクション */}
+        <section className="mb-16">
+          <Quiz questions={quizQuestions} />
+        </section>
+
+        {/* ナビゲーション */}
         <ChapterNav currentChapter={11} />
       </main>
     </div>
