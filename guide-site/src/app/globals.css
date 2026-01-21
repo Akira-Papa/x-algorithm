@@ -1,0 +1,771 @@
+/* Google Fonts - Noto Sans JP */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  /* 教科書スタイル - ライトモード */
+  --background: #ffffff;
+  --foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #333333;
+  --popover: #ffffff;
+  --popover-foreground: #333333;
+  --primary: #1e3a5f;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #333333;
+  --muted: #f8f9fa;
+  --muted-foreground: #666666;
+  --accent: #4a6fa5;
+  --accent-foreground: #ffffff;
+  --destructive: #c53030;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #1e3a5f;
+  --radius: 0.375rem;
+  --sidebar-bg: #fafafa;
+  --sidebar-border: #e5e5e5;
+
+  /* 教科書用追加カラー */
+  --highlight: #fff3cd;
+  --highlight-border: #ffc107;
+  --info: #e7f3ff;
+  --info-border: #4a6fa5;
+  --success: #d4edda;
+  --success-border: #28a745;
+  --warning: #fff3cd;
+  --warning-border: #ffc107;
+}
+
+.dark {
+  /* 教科書スタイル - ダークモード */
+  --background: #1a1a2e;
+  --foreground: #e8e8e8;
+  --card: #252540;
+  --card-foreground: #e8e8e8;
+  --popover: #252540;
+  --popover-foreground: #e8e8e8;
+  --primary: #6b8fc7;
+  --primary-foreground: #1a1a2e;
+  --secondary: #2d2d44;
+  --secondary-foreground: #e8e8e8;
+  --muted: #2d2d44;
+  --muted-foreground: #a0a0a0;
+  --accent: #7fa0c9;
+  --accent-foreground: #1a1a2e;
+  --destructive: #e57373;
+  --destructive-foreground: #1a1a2e;
+  --border: #3d3d5c;
+  --input: #3d3d5c;
+  --ring: #6b8fc7;
+  --sidebar-bg: #1a1a2e;
+  --sidebar-border: #2d2d44;
+
+  /* 教科書用追加カラー（ダークモード） */
+  --highlight: #3d3520;
+  --highlight-border: #d4a900;
+  --info: #1e3a5f;
+  --info-border: #6b8fc7;
+  --success: #1e3d24;
+  --success-border: #4caf50;
+  --warning: #3d3520;
+  --warning-border: #d4a900;
+}
+
+@theme inline {
+  /* カスタムカラー */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-highlight: var(--highlight);
+  --color-highlight-border: var(--highlight-border);
+  --color-info: var(--info);
+  --color-info-border: var(--info-border);
+  --color-success: var(--success);
+  --color-success-border: var(--success-border);
+  --color-warning: var(--warning);
+  --color-warning-border: var(--warning-border);
+
+  /* Gray カラーパレット */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  /* Slate カラーパレット */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+
+  /* Zinc カラーパレット */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+
+  /* Blue カラーパレット */
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-blue-950: #172554;
+
+  /* Green カラーパレット */
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+  --color-green-950: #052e16;
+
+  /* Red カラーパレット */
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  /* Yellow カラーパレット */
+  --color-yellow-50: #fefce8;
+  --color-yellow-100: #fef9c3;
+  --color-yellow-200: #fef08a;
+  --color-yellow-300: #fde047;
+  --color-yellow-400: #facc15;
+  --color-yellow-500: #eab308;
+  --color-yellow-600: #ca8a04;
+  --color-yellow-700: #a16207;
+  --color-yellow-800: #854d0e;
+  --color-yellow-900: #713f12;
+  --color-yellow-950: #422006;
+
+  /* Amber カラーパレット */
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #78350f;
+  --color-amber-950: #451a03;
+
+  /* Indigo カラーパレット */
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-200: #c7d2fe;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+  --color-indigo-900: #312e81;
+  --color-indigo-950: #1e1b4b;
+
+  /* Purple カラーパレット */
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
+  --color-purple-950: #3b0764;
+
+  /* Emerald カラーパレット */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
+
+  /* フォント */
+  --font-sans: "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+
+  /* 角丸 */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  font-feature-settings: "palt";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar - シンプルなスタイル */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Sidebar scrollbar - 控えめなスタイル */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Firefox対応 */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Code block styling - 教科書スタイル */
+/* prose内のpreのみにスタイルを適用（コンポーネントのTailwindクラスを上書きしない） */
+.prose pre {
+  background: #1e293b;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+code {
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  font-size: 0.875em;
+}
+
+/* インラインコード */
+:not(pre) > code {
+  background: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.85em;
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+/* Selection styling */
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Accordion animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* ================================================
+   教科書スタイル - Prose (本文) スタイリング
+   ================================================ */
+.prose {
+  max-width: 72ch;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+/* 見出しスタイル - 教科書風 */
+.prose h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary);
+  line-height: 1.4;
+}
+
+.prose h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0.75rem;
+  border-left: 4px solid var(--primary);
+  line-height: 1.4;
+}
+
+.prose h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.prose h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+/* 段落 */
+.prose p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* リスト */
+.prose ul,
+.prose ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+  line-height: 1.8;
+}
+
+.prose li::marker {
+  color: var(--primary);
+}
+
+/* リンク */
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* 強調 */
+.prose strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+/* 引用 - 教科書風 */
+.prose blockquote {
+  background: var(--info);
+  border-left: 4px solid var(--info-border);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-style: normal;
+  color: var(--foreground);
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+/* 画像 */
+.prose img {
+  border-radius: var(--radius);
+  margin: 1.5rem auto;
+  border: 1px solid var(--border);
+}
+
+/* テーブル - 教科書風 */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+}
+
+.prose th {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 500;
+}
+
+.prose tr:nth-child(even) {
+  background: var(--muted);
+}
+
+.prose tr:hover {
+  background: var(--secondary);
+}
+
+/* 水平線 */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ================================================
+   教科書スタイル - 特殊ボックス
+   ================================================ */
+
+/* ポイントボックス */
+.point-box {
+  background: var(--highlight);
+  border: 1px solid var(--highlight-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.point-box-title {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 補足情報ボックス */
+.info-box {
+  background: var(--info);
+  border: 1px solid var(--info-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* 注意ボックス */
+.warning-box {
+  background: var(--warning);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* 成功ボックス */
+.success-box {
+  background: var(--success);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* ================================================
+   教科書スタイル - ナビゲーション
+   ================================================ */
+
+/* サイドバー */
+.sidebar-nav {
+  font-size: 0.9375rem;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.sidebar-nav a:hover {
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.sidebar-nav a.active {
+  color: var(--primary);
+  background: var(--info);
+  font-weight: 500;
+}
+
+/* 目次 */
+.toc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.toc-title {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc a {
+  display: block;
+  padding: 0.25rem 0;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.toc a:hover {
+  color: var(--primary);
+}
+
+.toc a.active {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* ================================================
+   教科書スタイル - ボタン
+   ================================================ */
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--muted);
+}
+
+/* ================================================
+   教科書スタイル - カード
+   ================================================ */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: box-shadow 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
+
+.card-description {
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ================================================
+   ユーティリティ
+   ================================================ */
+
+/* フォーカス状態 */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* テキストの行間調整 */
+.leading-relaxed {
+  line-height: 1.8;
+}
+
+.leading-loose {
+  line-height: 2;
+}
+
+/* 章番号スタイル */
+.chapter-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* セクション番号 */
+.section-number {
+  color: var(--primary);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
