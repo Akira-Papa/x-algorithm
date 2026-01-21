@@ -1,10 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import {
   ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   CheckIcon,
   XMarkIcon,
   BookOpenIcon,
@@ -19,6 +16,7 @@ import {
 import { Quiz, type QuizQuestion } from '@/components/ui/Quiz';
 import { FAQ, type FAQItem } from '@/components/ui/Accordion';
 import { ChapterNav } from '@/components/ui/ChapterNav';
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // FAQ Data
 const faqData: FAQItem[] = [
@@ -195,7 +193,7 @@ function TwoTowerDiagram() {
           <div className="flex flex-col items-center">
             <div className="w-32 md:w-40 bg-blue-500 rounded-t rounded-b-sm p-3 text-white text-center">
               <UserIcon className="w-5 h-5 mx-auto mb-1" />
-              <div className="text-sm font-bold">User Tower</div>
+              <div className="text-sm font-bold">User<br />Tower</div>
               <div className="text-xs opacity-80">（ユーザー塔）</div>
               <div className="mt-2 pt-2 border-t border-blue-400/50 text-xs">
                 <p>あなたは</p>
@@ -212,7 +210,7 @@ function TwoTowerDiagram() {
           <div className="flex flex-col items-center">
             <div className="w-32 md:w-40 bg-purple-500 rounded-t rounded-b-sm p-3 text-white text-center">
               <DocumentTextIcon className="w-5 h-5 mx-auto mb-1" />
-              <div className="text-sm font-bold">Content Tower</div>
+              <div className="text-sm font-bold">Content<br />Tower</div>
               <div className="text-xs opacity-80">（コンテンツ塔）</div>
               <div className="mt-2 pt-2 border-t border-purple-400/50 text-xs">
                 <p>この投稿は</p>
@@ -482,20 +480,7 @@ function LimitationBox({ number, title, items }: { number: number; title: string
 export default function Chapter3Page() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-            <ChevronLeftIcon className="w-4 h-4" />
-            目次
-          </Link>
-          <span className="text-sm font-medium text-gray-900 dark:text-white">第3章</span>
-          <Link href="/chapters/4" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-            次章
-            <ChevronRightIcon className="w-4 h-4" />
-          </Link>
-        </div>
-      </header>
+      <ChapterHeader currentChapter={3} />
 
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-4 py-8">

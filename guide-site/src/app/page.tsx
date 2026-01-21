@@ -14,10 +14,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { chapters } from "@/lib/chapters";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { WebSiteJsonLd } from "@/components/ui/JsonLd";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
+      <WebSiteJsonLd
+        name="Xアルゴリズム攻略ガイド"
+        url="https://x-algorithm-guide.vercel.app"
+        description="X（旧Twitter）の推薦アルゴリズムをオープンソースコードから徹底解析。全12章で仕組みを完全理解。"
+      />
       {/* ヘッダー */}
       <header className="border-b border-border bg-background">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">

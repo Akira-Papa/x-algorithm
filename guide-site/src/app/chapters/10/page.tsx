@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
   ChatBubbleLeftRightIcon,
   UserCircleIcon,
@@ -9,7 +8,6 @@ import {
   ArrowPathRoundedSquareIcon,
   UserPlusIcon,
   ChevronDownIcon,
-  ChevronLeftIcon,
   CheckIcon,
   LightBulbIcon,
   ClipboardDocumentListIcon,
@@ -22,6 +20,7 @@ import {
 import { Quiz, type QuizQuestion } from "@/components/ui/Quiz";
 import { FAQ, type FAQItem } from "@/components/ui/Accordion";
 import { ChapterNav } from "@/components/ui/ChapterNav";
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // Section Header Component
 function SectionHeader({ number, title }: { number: string; title: string }) {
@@ -570,21 +569,7 @@ export default function Chapter10() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors flex items-center gap-2"
-          >
-            <ChevronLeftIcon className="w-4 h-4" />
-            目次へ戻る
-          </Link>
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-            第10章 / 全12章
-          </span>
-        </div>
-      </header>
+      <ChapterHeader currentChapter={10} />
 
       <main className="max-w-4xl mx-auto px-6 py-12">
         {/* Hero Section */}

@@ -1,13 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import {
   UsersIcon,
   ArrowPathIcon,
   ChartBarIcon,
   RocketLaunchIcon,
   ChevronDownIcon,
-  ChevronLeftIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   LightBulbIcon,
@@ -19,6 +17,7 @@ import {
 import { Quiz, QuizQuestion } from '@/components/ui/Quiz';
 import { FAQ, FAQItem } from '@/components/ui/Accordion';
 import { ChapterNav } from '@/components/ui/ChapterNav';
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // FAQ データ
 const faqData: FAQItem[] = [
@@ -111,16 +110,7 @@ const quizData: QuizQuestion[] = [
 export default function Chapter7Page() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900">
-      {/* ヘッダー */}
-      <header className="sticky top-0 z-50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
-            <ChevronLeftIcon className="w-4 h-4" />
-            目次に戻る
-          </Link>
-          <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">第7章 / 全12章</span>
-        </div>
-      </header>
+<ChapterHeader currentChapter={7} />
 
       <main className="max-w-4xl mx-auto px-6 py-12">
         {/* タイトルセクション */}

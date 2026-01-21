@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import {
   CheckIcon,
   XMarkIcon,
@@ -11,12 +10,11 @@ import {
   AcademicCapIcon,
   HandThumbUpIcon,
   ArrowTrendingUpIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import { Quiz, type QuizQuestion } from '@/components/ui/Quiz';
 import { FAQ } from '@/components/ui/Accordion';
 import { ChapterNav } from '@/components/ui/ChapterNav';
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // Types
 interface EngagementData {
@@ -342,20 +340,7 @@ function StrategyList({ title, items }: { title: string; items: string[] }) {
 export default function Chapter2Page() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-            <ChevronLeftIcon className="w-4 h-4" />
-            目次
-          </Link>
-          <span className="text-sm font-medium text-gray-900 dark:text-white">第2章</span>
-          <Link href="/chapters/3" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-            次章
-            <ChevronRightIcon className="w-4 h-4" />
-          </Link>
-        </div>
-      </header>
+      <ChapterHeader currentChapter={2} />
 
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-4 py-8">

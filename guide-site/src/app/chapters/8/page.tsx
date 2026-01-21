@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   ClockIcon,
   UsersIcon,
@@ -9,7 +8,6 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon,
   XCircleIcon,
-  ArrowLeftIcon,
   LightBulbIcon,
   BookOpenIcon,
   QuestionMarkCircleIcon,
@@ -18,6 +16,7 @@ import {
 import { Quiz, QuizQuestion } from "@/components/ui/Quiz";
 import { FAQ, FAQItem } from "@/components/ui/Accordion";
 import { ChapterNav } from "@/components/ui/ChapterNav";
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // Section Header Component
 function SectionHeader({
@@ -158,21 +157,7 @@ export default function Chapter8Page() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-          >
-            <ArrowLeftIcon className="w-4 h-4" />
-            ホームに戻る
-          </Link>
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 px-3 py-1 rounded-full">
-            第8章 / 全12章
-          </span>
-        </div>
-      </header>
+<ChapterHeader currentChapter={8} />
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-10">

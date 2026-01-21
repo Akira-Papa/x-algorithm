@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  ChevronLeftIcon,
   CheckIcon,
   ClockIcon,
   ChartBarIcon,
@@ -20,6 +19,7 @@ import {
 import { Quiz, type QuizQuestion } from "@/components/ui/Quiz";
 import { FAQ, type FAQItem } from "@/components/ui/Accordion";
 import { ChapterNav } from "@/components/ui/ChapterNav";
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // KPI Table Component
 function KPITable({
@@ -389,19 +389,7 @@ export default function Chapter12Page() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900">
-      {/* ヘッダー */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
-            <ChevronLeftIcon className="w-4 h-4" />
-            目次に戻る
-          </Link>
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">第12章（最終章）</span>
-          <Link href="/complete" className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
-            完了へ
-          </Link>
-        </div>
-      </header>
+      <ChapterHeader currentChapter={12} />
 
       {/* メインコンテンツ */}
       <main className="max-w-4xl mx-auto px-6 py-12">

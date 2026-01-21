@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import {
   ArrowDownIcon,
   CheckCircleIcon,
-  ChevronLeftIcon,
   CpuChipIcon,
   UserIcon,
   DocumentTextIcon,
@@ -18,6 +16,7 @@ import {
 import { Quiz, type QuizQuestion } from '@/components/ui/Quiz';
 import { FAQ } from '@/components/ui/Accordion';
 import { ChapterNav } from '@/components/ui/ChapterNav';
+import { ChapterHeader } from '@/components/ui/ChapterHeader';
 
 // Section Header Component
 function SectionHeader({ number, title }: { number: string; title: string }) {
@@ -380,26 +379,7 @@ const quizQuestions: QuizQuestion[] = [
 export default function Chapter4Page() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-          >
-            <ChevronLeftIcon className="h-5 w-5" />
-            <span>目次に戻る</span>
-          </Link>
-          <nav className="flex gap-4 text-sm">
-            <Link href="/chapters/3" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
-              第3章
-            </Link>
-            <Link href="/chapters/5" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
-              第5章
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <ChapterHeader currentChapter={4} />
 
       {/* Main Content */}
       <main className="mx-auto max-w-4xl px-6 py-8">
