@@ -11,8 +11,10 @@ import {
   CodeBracketIcon,
   BookmarkIcon,
   CpuChipIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { chapters } from "@/lib/chapters";
+import { rankingData } from "@/lib/rankings";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { WebSiteJsonLd } from "@/components/ui/JsonLd";
 
@@ -99,6 +101,75 @@ export default function Home() {
               title="理解度チェック"
               description="各章末にFAQとクイズを収録"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* X行動ランキング */}
+      <section className="border-b border-border px-6 py-12 md:py-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8 flex items-center justify-center gap-3">
+            <TrophyIcon className="h-5 w-5 text-muted-foreground" />
+            <h2 className="text-lg font-semibold">X行動ランキング↑↓</h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* やったほうがいい TOP 10 */}
+            <div className="rounded-xl border-2 border-green-200 bg-green-50/50 p-5 dark:border-green-800 dark:bg-green-950/30">
+              <h3 className="mb-4 flex items-center gap-2 text-base font-bold text-green-700 dark:text-green-300">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 text-sm text-white">
+                  ↑
+                </span>
+                やったほうがいい TOP 10
+              </h3>
+              <ol className="space-y-2">
+                {rankingData.dos.map((item) => (
+                  <li
+                    key={item.rank}
+                    className="flex items-start gap-2 text-sm"
+                  >
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded bg-green-200 text-xs font-bold text-green-800 dark:bg-green-800 dark:text-green-200">
+                      {item.rank}
+                    </span>
+                    <span className="text-foreground">{item.title}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* やってはいけない TOP 10 */}
+            <div className="rounded-xl border-2 border-red-200 bg-red-50/50 p-5 dark:border-red-800 dark:bg-red-950/30">
+              <h3 className="mb-4 flex items-center gap-2 text-base font-bold text-red-700 dark:text-red-300">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                  ↓
+                </span>
+                やってはいけない TOP 10
+              </h3>
+              <ol className="space-y-2">
+                {rankingData.donts.map((item) => (
+                  <li
+                    key={item.rank}
+                    className="flex items-start gap-2 text-sm"
+                  >
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded bg-red-200 text-xs font-bold text-red-800 dark:bg-red-800 dark:text-red-200">
+                      {item.rank}
+                    </span>
+                    <span className="text-foreground">{item.title}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+
+          {/* 詳しくはこちら */}
+          <div className="mt-6 text-center">
+            <Link
+              href="/rankings"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            >
+              詳しくはこちら
+              <ArrowRightIcon className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

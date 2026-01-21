@@ -22,6 +22,7 @@ import {
   FunnelIcon,
   BoltIcon,
   LightBulbIcon,
+  TrophyIcon,
   HeartIcon,
   FireIcon,
   ChatBubbleLeftRightIcon,
@@ -105,6 +106,24 @@ function SidebarContent({
           >
             <HomeIcon className="h-5 w-5 flex-shrink-0" />
             {!isCollapsed && <span>ホーム</span>}
+          </Link>
+        </div>
+
+        {/* X行動ランキングリンク */}
+        <div className="px-3 pb-2">
+          <Link
+            href="/rankings"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-200",
+              isActive("/rankings")
+                ? "bg-info text-primary font-medium"
+                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+            )}
+            onClick={() => setIsMobileMenuOpen(false)}
+            title="X行動ランキング"
+          >
+            <TrophyIcon className="h-5 w-5 flex-shrink-0" />
+            {!isCollapsed && <span>X行動ランキング↑↓</span>}
           </Link>
         </div>
 
