@@ -123,7 +123,7 @@ function SidebarContent({
             title="X行動ランキング"
           >
             <TrophyIcon className="h-5 w-5 flex-shrink-0" />
-            {!isCollapsed && <span>X行動ランキング↑↓</span>}
+            {!isCollapsed && <span>X行動ランキング10↑↓</span>}
           </Link>
         </div>
 
