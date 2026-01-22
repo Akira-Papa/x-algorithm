@@ -739,6 +739,10 @@ export default function GlossaryPage() {
           <p className="text-muted-foreground">
             Xアルゴリズムの専門用語を解説します。検索やカテゴリで絞り込むことができます。
           </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            📚 ソース: <a href="https://github.com/twitter/the-algorithm-ml/blob/main/projects/home/recap/README.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">twitter/the-algorithm-ml</a>（2023年4月公開）。
+            ※ 2026年1月公開の <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">xai-org/x-algorithm</a> では、Grokベースのスコアリングに移行しています。
+          </p>
         </div>
 
         {/* 検索バー */}

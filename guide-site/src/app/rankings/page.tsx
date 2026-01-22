@@ -22,7 +22,7 @@ import {
 export const metadata: Metadata = {
   title: "Xの行動ランキング | Xアルゴリズム攻略ガイド",
   description:
-    "Xアルゴリズムでやったほうがいいこと・やってはいけないことをランキング形式で解説。weighted_scorer.rsのエンゲージメント重みに基づく正確なスコア影響度も一目でわかります。",
+    "Xアルゴリズムでやったほうがいいこと・やってはいけないことをランキング形式で解説。公式オープンソースのエンゲージメント重みに基づく正確なスコア影響度も一目でわかります。",
 };
 
 // ランキングカードコンポーネント
@@ -241,14 +241,14 @@ export default function RankingsPage() {
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
               <span className="text-2xl">🏆</span>
               <span className="text-sm font-medium text-primary">
-                weighted_scorer.rs 基準
+                公式オープンソース基準
               </span>
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               <span className="text-primary">Xの行動</span>ランキング
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Xアルゴリズムのソースコード（weighted_scorer.rs）から抽出した
+              Twitter公式オープンソースリリース（2023年4月）の
               <br className="hidden sm:inline" />
               エンゲージメント重みに基づく、やったほうがいい・やってはいけない行動TOP10
             </p>
@@ -265,9 +265,15 @@ export default function RankingsPage() {
             <div className="text-sm text-blue-800 dark:text-blue-200">
               <p className="font-medium">データソースについて</p>
               <p className="mt-1 text-blue-700 dark:text-blue-300">
-                このランキングはXのオープンソースアルゴリズム（weighted_scorer.rs）から抽出した
+                このランキングはTwitter公式オープンソースリリース（2023年4月）の
                 エンゲージメント重みと、第2章・第6章・第12章の解説に基づいています。
                 詳細な解説は関連章のリンクから確認できます。
+              </p>
+              <p className="mt-2 text-blue-700 dark:text-blue-300">
+                📚 ソース: <a href="https://github.com/twitter/the-algorithm-ml/blob/main/projects/home/recap/README.md" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-900 dark:hover:text-blue-100">twitter/the-algorithm-ml</a>（2023年4月公開時点）
+              </p>
+              <p className="mt-1 text-xs text-blue-600 dark:text-blue-400">
+                ※ 2026年1月公開の <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener noreferrer" className="underline">xai-org/x-algorithm</a> では、Grokベースのスコアリングに移行しています。会話の文章の内容や意味自体もAIにより計測されるため、質の高い会話がより重要になっています。
               </p>
             </div>
           </div>

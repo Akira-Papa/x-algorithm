@@ -385,15 +385,27 @@ export default function Chapter2Page() {
           </h2>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            ソースコード <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">weighted_scorer.rs</code> から抽出したデータです。
+            Twitter公式オープンソースリリース（2023年4月）に記載されたデータです。
           </p>
+
+          {/* ソース注記 */}
+          <div className="mb-6 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-600 dark:text-gray-400">
+            <p className="mb-2">
+              <span className="font-semibold">📚 データソース:</span>{' '}
+              <a href="https://github.com/twitter/the-algorithm-ml/blob/main/projects/home/recap/README.md" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">twitter/the-algorithm-ml</a>
+              （2023年4月公開時点の値）
+            </p>
+            <p className="text-gray-500 dark:text-gray-500">
+              ※ 2026年1月公開の <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">xai-org/x-algorithm</a> では、Grokベースのスコアリングに移行しています。会話の文章の内容や意味自体もAIにより計測されるため、質の高い会話を促進する投稿がより重要になっています。
+            </p>
+          </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
             <HandThumbUpIcon className="w-4 h-4 text-green-500" />
             2.2.1 基本インタラクション（4種類）
           </h3>
 
-          <CodeBlock title="weighted_scorer.rs - 基本インタラクション">
+          <CodeBlock title="エンゲージメント重み（2023年4月公式リリースより）">
 {`favorited: 0.5    // いいね
 retweeted: 1.0    // リポスト
 replied: 13.5     // リプライ（最重要）
@@ -439,7 +451,7 @@ quoted: 1.1       // 引用RT`}
             ネガティブエンゲージメントは、投稿の評価を大きく下げる要因です。
           </p>
 
-          <CodeBlock title="weighted_scorer.rs - ネガティブエンゲージメント">
+          <CodeBlock title="ネガティブエンゲージメント重み（2023年4月公式リリースより）">
 {`reported: -10.0       // 通報
 blocked: -10.0        // ブロック
 muted: -5.0           // ミュート

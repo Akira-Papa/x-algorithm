@@ -713,6 +713,17 @@ let author_id = c.retweeted_user_id.unwrap_or(c.author_id);`}</CodeBlock>
           すべてのスコアリング関連パラメータは<code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded">params</code>モジュールで定義されます（セキュリティ上の理由でオープンソースリリースから除外）。
         </InfoBox>
 
+        {/* ソース注記 */}
+        <div className="my-6 p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg text-sm">
+          <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">📚 データソースについて</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-2">
+            本仕様書の情報は <a href="https://github.com/twitter/the-algorithm-ml/blob/main/projects/home/recap/README.md" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">twitter/the-algorithm-ml</a>（2023年4月公開）に基づいています。
+          </p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs">
+            ※ 2026年1月公開の <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">xai-org/x-algorithm</a> では、Grokベースの「Phoenix Scorer」に移行しています。会話の文章の内容や意味自体もAIにより計測されるため、質の高い会話を促進する投稿がより重要な指標になっています。
+          </p>
+        </div>
+
         <SubSectionHeader id="weight-parameters" number="7.1" title="重みパラメータ" />
 
         <DataTable
