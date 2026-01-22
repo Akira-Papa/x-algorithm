@@ -1,325 +1,325 @@
-# X For You Feed Algorithm
+# X おすすめフィード アルゴリズム
 
-This repository contains the core recommendation system powering the "For You" feed on X. It combines in-network content (from accounts you follow) with out-of-network content (discovered through ML-based retrieval) and ranks everything using a Grok-based transformer model.
+このリポジトリは、Xの「おすすめ」フィードを動かすコアレコメンドシステムを含んでいます。フォロー中アカウントからのイン・ネットワークコンテンツと、ML ベースの検索で発見したアウト・オブ・ネットワークコンテンツを組み合わせ、Grok ベースの Transformer モデルですべてをランキングします。
 
-> **Note:** The transformer implementation is ported from the [Grok-1 open source release](https://github.com/xai-org/grok-1) by xAI, adapted for recommendation system use cases.
+> **注記**: Transformer の実装は、xAI による [Grok-1 オープンソースリリース](https://github.com/xai-org/grok-1) から移植し、レコメンドシステム用に適応しています。
 
-## Table of Contents
+## 目次
 
-- [Overview](#overview)
-- [System Architecture](#system-architecture)
-- [Components](#components)
+- [概要](#概要)
+- [システムアーキテクチャ](#システムアーキテクチャ)
+- [コンポーネント](#コンポーネント)
   - [Home Mixer](#home-mixer)
   - [Thunder](#thunder)
   - [Phoenix](#phoenix)
   - [Candidate Pipeline](#candidate-pipeline)
-- [How It Works](#how-it-works)
-  - [Pipeline Stages](#pipeline-stages)
-  - [Scoring and Ranking](#scoring-and-ranking)
-  - [Filtering](#filtering)
-- [Key Design Decisions](#key-design-decisions)
-- [License](#license)
+- [仕組み](#仕組み)
+  - [パイプラインステージ](#パイプラインステージ)
+  - [スコアリングとランキング](#スコアリングとランキング)
+  - [フィルタリング](#フィルタリング)
+- [主な設計判断](#主な設計判断)
+- [ライセンス](#ライセンス)
 
 ---
 
-## Overview
+## 概要
 
-The For You feed algorithm retrieves, ranks, and filters posts from two sources:
+おすすめフィードのアルゴリズムは、2つのソースから投稿を取得・ランキング・フィルタリングします：
 
-1. **In-Network (Thunder)**: Posts from accounts you follow
-2. **Out-of-Network (Phoenix Retrieval)**: Posts discovered from a global corpus
+1. **イン・ネットワーク (Thunder)**: フォロー中アカウントからの投稿
+2. **アウト・オブ・ネットワーク (Phoenix Retrieval)**: グローバルコーパスから発見した投稿
 
-Both sources are combined and ranked together using **Phoenix**, a Grok-based transformer model that predicts engagement probabilities for each post. The final score is a weighted combination of these predicted engagements.
+両方のソースは **Phoenix**（Grok ベースの Transformer モデル）で統合・ランキングされます。Phoenix は各投稿のエンゲージメント確率を予測し、最終スコアはこれらの予測エンゲージメントの重み付け合計となります。
 
-We have eliminated every single hand-engineered feature and most heuristics from the system. The Grok-based transformer does all the heavy lifting by understanding your engagement history (what you liked, replied to, shared, etc.) and using that to determine what content is relevant to you.
+システムから手作業による特徴エンジニアリングとほとんどのヒューリスティックを排除しました。Grok ベースの Transformer が、あなたのエンゲージメント履歴（いいね、リプライ、シェアなど）を理解し、どのコンテンツが関連性があるかを判断するすべての重要な処理を行います。
 
 ---
 
-## System Architecture
+## システムアーキテクチャ
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                    FOR YOU FEED REQUEST                                     │
+│                                    おすすめフィード リクエスト                                  │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
                                                │
                                                ▼
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                         HOME MIXER                                          │
-│                                    (Orchestration Layer)                                    │
+│                                      (オーケストレーション層)                                   │
 ├─────────────────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                             │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                   QUERY HYDRATION                                   │   │
+│   │                                   クエリ ハイドレーション                              │   │
 │   │  ┌──────────────────────────┐    ┌──────────────────────────────────────────────┐   │   │
-│   │  │ User Action Sequence     │    │ User Features                                │   │   │
-│   │  │ (engagement history)     │    │ (following list, preferences, etc.)          │   │   │
+│   │  │ ユーザーアクション履歴     │    │ ユーザー特徴量                                │   │   │
+│   │  │ (エンゲージメント履歴)     │    │ (フォローリスト、設定など)                     │   │   │
 │   │  └──────────────────────────┘    └──────────────────────────────────────────────┘   │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                  CANDIDATE SOURCES                                  │   │
+│   │                                   候補ソース                                         │   │
 │   │         ┌─────────────────────────────┐    ┌────────────────────────────────┐       │   │
 │   │         │        THUNDER              │    │     PHOENIX RETRIEVAL          │       │   │
-│   │         │    (In-Network Posts)       │    │   (Out-of-Network Posts)       │       │   │
+│   │         │    (イン・ネットワーク)       │    │   (アウト・オブ・ネットワーク)    │       │   │
 │   │         │                             │    │                                │       │   │
-│   │         │  Posts from accounts        │    │  ML-based similarity search    │       │   │
-│   │         │  you follow                 │    │  across global corpus          │       │   │
+│   │         │  フォロー中アカウント         │    │  グローバルコーパスからの        │       │   │
+│   │         │  からの投稿                  │    │  ML ベース類似度検索            │       │   │
 │   │         └─────────────────────────────┘    └────────────────────────────────┘       │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                      HYDRATION                                      │   │
-│   │  Fetch additional data: core post metadata, author info, media entities, etc.       │   │
+│   │                                    ハイドレーション                                   │   │
+│   │  追加データの取得: 投稿メタデータ、投稿者情報、メディアエンティティなど                    │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                      FILTERING                                      │   │
-│   │  Remove: duplicates, old posts, self-posts, blocked authors, muted keywords, etc.   │   │
+│   │                                    フィルタリング                                     │   │
+│   │  除外: 重複、古い投稿、自分の投稿、ブロック済み投稿者、ミュート済みキーワードなど          │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                       SCORING                                       │   │
+│   │                                     スコアリング                                     │   │
 │   │  ┌──────────────────────────┐                                                       │   │
-│   │  │  Phoenix Scorer          │    Grok-based Transformer predicts:                   │   │
-│   │  │  (ML Predictions)        │    P(like), P(reply), P(repost), P(click)...          │   │
+│   │  │  Phoenix Scorer          │    Grok ベース Transformer が予測:                     │   │
+│   │  │  (ML 予測)               │    P(いいね), P(リプライ), P(リポスト), P(クリック)...    │   │
 │   │  └──────────────────────────┘                                                       │   │
 │   │               │                                                                     │   │
 │   │               ▼                                                                     │   │
 │   │  ┌──────────────────────────┐                                                       │   │
-│   │  │  Weighted Scorer         │    Weighted Score = Σ (weight × P(action))            │   │
-│   │  │  (Combine predictions)   │                                                       │   │
+│   │  │  Weighted Scorer         │    重み付きスコア = Σ (重み × P(アクション))            │   │
+│   │  │  (予測を統合)            │                                                       │   │
 │   │  └──────────────────────────┘                                                       │   │
 │   │               │                                                                     │   │
 │   │               ▼                                                                     │   │
 │   │  ┌──────────────────────────┐                                                       │   │
-│   │  │  Author Diversity        │    Attenuate repeated author scores                   │   │
-│   │  │  Scorer                  │    to ensure feed diversity                           │   │
+│   │  │  Author Diversity        │    同一投稿者の繰り返しスコアを減衰                      │   │
+│   │  │  Scorer                  │    フィードの多様性を確保                              │   │
 │   │  └──────────────────────────┘                                                       │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                      SELECTION                                      │   │
-│   │                    Sort by final score, select top K candidates                     │   │
+│   │                                      選択                                           │   │
+│   │                    最終スコアでソートし、上位 K 件の候補を選択                          │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                              │                                              │
 │                                              ▼                                              │
 │   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                              FILTERING (Post-Selection)                             │   │
-│   │                 Visibility filtering (deleted/spam/violence/gore etc)               │   │
+│   │                            フィルタリング (選択後)                                    │   │
+│   │               可視性フィルタリング (削除済み/スパム/暴力/グロなど)                       │   │
 │   └─────────────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                             │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
                                                │
                                                ▼
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                     RANKED FEED RESPONSE                                    │
+│                                   ランキング済みフィード レスポンス                            │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Components
+## コンポーネント
 
 ### Home Mixer
 
-**Location:** [`home-mixer/`](home-mixer/)
+**場所:** [`home-mixer/`](home-mixer/)
 
-The orchestration layer that assembles the For You feed. It leverages the `CandidatePipeline` framework with the following stages:
+おすすめフィードを組み立てるオーケストレーション層。`CandidatePipeline` フレームワークを活用し、以下のステージで構成：
 
-| Stage | Description |
-|-------|-------------|
-| Query Hydrators | Fetch user context (engagement history, following list) |
-| Sources | Retrieve candidates from Thunder and Phoenix |
-| Hydrators | Enrich candidates with additional data |
-| Filters | Remove ineligible candidates |
-| Scorers | Predict engagement and compute final scores |
-| Selector | Sort by score and select top K |
-| Post-Selection Filters | Final visibility and dedup checks |
-| Side Effects | Cache request info for future use |
+| ステージ | 説明 |
+|---------|------|
+| Query Hydrators | ユーザーコンテキスト（エンゲージメント履歴、フォローリスト）を取得 |
+| Sources | Thunder と Phoenix から候補を取得 |
+| Hydrators | 候補に追加データを付与 |
+| Filters | 不適格な候補を除外 |
+| Scorers | エンゲージメントを予測し最終スコアを計算 |
+| Selector | スコアでソートし上位 K 件を選択 |
+| Post-Selection Filters | 最終的な可視性と重複チェック |
+| Side Effects | 将来の使用のためリクエスト情報をキャッシュ |
 
-The server exposes a gRPC endpoint (`ScoredPostsService`) that returns ranked posts for a given user.
+サーバーは gRPC エンドポイント（`ScoredPostsService`）を公開し、指定ユーザーのランキング済み投稿を返します。
 
 ---
 
 ### Thunder
 
-**Location:** [`thunder/`](thunder/)
+**場所:** [`thunder/`](thunder/)
 
-An in-memory post store and realtime ingestion pipeline that tracks recent posts from all users. It:
+全ユーザーの最近の投稿を追跡するインメモリ投稿ストアとリアルタイム取り込みパイプライン：
 
-- Consumes post create/delete events from Kafka
-- Maintains per-user stores for original posts, replies/reposts, and video posts
-- Serves "in-network" post candidates from accounts the requesting user follows
-- Automatically trims posts older than the retention period
+- Kafka から投稿作成/削除イベントを消費
+- ユーザーごとにオリジナル投稿、リプライ/リポスト、動画投稿のストアを維持
+- リクエストユーザーがフォローしているアカウントから「イン・ネットワーク」投稿候補を提供
+- 保持期間を過ぎた投稿を自動的にトリム
 
-Thunder enables sub-millisecond lookups for in-network content without hitting an external database.
+Thunder により、外部データベースへのアクセスなしでイン・ネットワークコンテンツをサブミリ秒で検索できます。
 
 ---
 
 ### Phoenix
 
-**Location:** [`phoenix/`](phoenix/)
+**場所:** [`phoenix/`](phoenix/)
 
-The ML component with two main functions:
+2つの主要機能を持つ ML コンポーネント：
 
-#### 1. Retrieval (Two-Tower Model)
-Finds relevant out-of-network posts:
-- **User Tower**: Encodes user features and engagement history into an embedding
-- **Candidate Tower**: Encodes all posts into embeddings
-- **Similarity Search**: Retrieves top-K posts via dot product similarity
+#### 1. 検索 (Two-Tower モデル)
+関連するアウト・オブ・ネットワーク投稿を発見：
+- **User Tower**: ユーザー特徴量とエンゲージメント履歴を埋め込みにエンコード
+- **Candidate Tower**: すべての投稿を埋め込みにエンコード
+- **類似度検索**: 内積類似度で上位 K 件の投稿を取得
 
-#### 2. Ranking (Transformer with Candidate Isolation)
-Predicts engagement probabilities for each candidate:
-- Takes user context (engagement history) and candidate posts as input
-- Uses special attention masking so candidates cannot attend to each other
-- Outputs probabilities for each action type (like, reply, repost, click, etc.)
+#### 2. ランキング (候補分離付き Transformer)
+各候補のエンゲージメント確率を予測：
+- ユーザーコンテキスト（エンゲージメント履歴）と候補投稿を入力
+- 候補が互いにアテンションできないよう特別なアテンションマスクを使用
+- 各アクションタイプ（いいね、リプライ、リポスト、クリックなど）の確率を出力
 
-See [`phoenix/README.md`](phoenix/README.md) for detailed architecture documentation.
+詳細なアーキテクチャドキュメントは [`phoenix/README.md`](phoenix/README.md) を参照。
 
 ---
 
 ### Candidate Pipeline
 
-**Location:** [`candidate-pipeline/`](candidate-pipeline/)
+**場所:** [`candidate-pipeline/`](candidate-pipeline/)
 
-A reusable framework for building recommendation pipelines. Defines traits for:
+レコメンドパイプライン構築用の再利用可能フレームワーク。以下のトレイトを定義：
 
-| Trait | Purpose |
-|-------|---------|
-| `Source` | Fetch candidates from a data source |
-| `Hydrator` | Enrich candidates with additional features |
-| `Filter` | Remove candidates that shouldn't be shown |
-| `Scorer` | Compute scores for ranking |
-| `Selector` | Sort and select top candidates |
-| `SideEffect` | Run async side effects (caching, logging) |
+| トレイト | 目的 |
+|---------|------|
+| `Source` | データソースから候補を取得 |
+| `Hydrator` | 候補に追加特徴量を付与 |
+| `Filter` | 表示すべきでない候補を除外 |
+| `Scorer` | ランキング用スコアを計算 |
+| `Selector` | ソートして上位候補を選択 |
+| `SideEffect` | 非同期副作用を実行（キャッシュ、ログ） |
 
-The framework runs sources and hydrators in parallel where possible, with configurable error handling and logging.
-
----
-
-## How It Works
-
-### Pipeline Stages
-
-1. **Query Hydration**: Fetch the user's recent engagements history and metadata (eg. following list)
-
-2. **Candidate Sourcing**: Retrieve candidates from:
-   - **Thunder**: Recent posts from followed accounts (in-network)
-   - **Phoenix Retrieval**: ML-discovered posts from the global corpus (out-of-network)
-
-3. **Candidate Hydration**: Enrich candidates with:
-   - Core post data (text, media, etc.)
-   - Author information (username, verification status)
-   - Video duration (for video posts)
-   - Subscription status
-
-4. **Pre-Scoring Filters**: Remove posts that are:
-   - Duplicates
-   - Too old
-   - From the viewer themselves
-   - From blocked/muted accounts
-   - Containing muted keywords
-   - Previously seen or recently served
-   - Ineligible subscription content
-
-5. **Scoring**: Apply multiple scorers sequentially:
-   - **Phoenix Scorer**: Get ML predictions from the Phoenix transformer model
-   - **Weighted Scorer**: Combine predictions into a final relevance score
-   - **Author Diversity Scorer**: Attenuate repeated author scores for diversity
-   - **OON Scorer**: Adjust scores for out-of-network content
-
-6. **Selection**: Sort by score and select the top K candidates
-
-7. **Post-Selection Processing**: Final validation of post candidates to be served
+フレームワークは可能な限りソースとハイドレーターを並列実行し、設定可能なエラーハンドリングとログ機能を備えています。
 
 ---
 
-### Scoring and Ranking
+## 仕組み
 
-The Phoenix Grok-based transformer model predicts probabilities for multiple engagement types:
+### パイプラインステージ
+
+1. **クエリ ハイドレーション**: ユーザーの最近のエンゲージメント履歴とメタデータ（フォローリストなど）を取得
+
+2. **候補ソーシング**: 以下から候補を取得：
+   - **Thunder**: フォロー中アカウントの最近の投稿（イン・ネットワーク）
+   - **Phoenix Retrieval**: グローバルコーパスから ML で発見した投稿（アウト・オブ・ネットワーク）
+
+3. **候補ハイドレーション**: 候補に以下を付与：
+   - コア投稿データ（テキスト、メディアなど）
+   - 投稿者情報（ユーザー名、認証ステータス）
+   - 動画の長さ（動画投稿の場合）
+   - サブスクリプションステータス
+
+4. **スコアリング前フィルター**: 以下の投稿を除外：
+   - 重複
+   - 古すぎる投稿
+   - 閲覧者自身の投稿
+   - ブロック/ミュート済みアカウントからの投稿
+   - ミュート済みキーワードを含む投稿
+   - 既に見た投稿または最近提供した投稿
+   - アクセス不可のサブスクリプションコンテンツ
+
+5. **スコアリング**: 複数のスコアラーを順次適用：
+   - **Phoenix Scorer**: Phoenix Transformer モデルから ML 予測を取得
+   - **Weighted Scorer**: 予測を最終関連性スコアに統合
+   - **Author Diversity Scorer**: 多様性のため同一投稿者の繰り返しスコアを減衰
+   - **OON Scorer**: アウト・オブ・ネットワークコンテンツのスコアを調整
+
+6. **選択**: スコアでソートし上位 K 件の候補を選択
+
+7. **選択後処理**: 提供する投稿候補の最終検証
+
+---
+
+### スコアリングとランキング
+
+Phoenix の Grok ベース Transformer モデルは、複数のエンゲージメントタイプの確率を予測します：
 
 ```
-Predictions:
-├── P(favorite)
-├── P(reply)
-├── P(repost)
-├── P(quote)
-├── P(click)
-├── P(profile_click)
-├── P(video_view)
-├── P(photo_expand)
-├── P(share)
-├── P(dwell)
-├── P(follow_author)
-├── P(not_interested)
-├── P(block_author)
-├── P(mute_author)
-└── P(report)
+予測:
+├── P(いいね)
+├── P(リプライ)
+├── P(リポスト)
+├── P(引用)
+├── P(クリック)
+├── P(プロフィールクリック)
+├── P(動画視聴)
+├── P(画像展開)
+├── P(シェア)
+├── P(滞在時間)
+├── P(投稿者フォロー)
+├── P(興味なし)
+├── P(投稿者ブロック)
+├── P(投稿者ミュート)
+└── P(報告)
 ```
 
-The **Weighted Scorer** combines these into a final score:
+**Weighted Scorer** はこれらを最終スコアに統合します：
 
 ```
-Final Score = Σ (weight_i × P(action_i))
+最終スコア = Σ (重み_i × P(アクション_i))
 ```
 
-Positive actions (like, repost, share) have positive weights. Negative actions (block, mute, report) have negative weights, pushing down content the user would likely dislike.
+ポジティブなアクション（いいね、リポスト、シェア）はプラスの重み。ネガティブなアクション（ブロック、ミュート、報告）はマイナスの重みを持ち、ユーザーが嫌いそうなコンテンツを押し下げます。
 
 ---
 
-### Filtering
+### フィルタリング
 
-Filters run at two stages:
+フィルターは2つのステージで実行されます：
 
-**Pre-Scoring Filters:**
-| Filter | Purpose |
-|--------|---------|
-| `DropDuplicatesFilter` | Remove duplicate post IDs |
-| `CoreDataHydrationFilter` | Remove posts that failed to hydrate core metadata |
-| `AgeFilter` | Remove posts older than threshold |
-| `SelfpostFilter` | Remove user's own posts |
-| `RepostDeduplicationFilter` | Dedupe reposts of same content |
-| `IneligibleSubscriptionFilter` | Remove paywalled content user can't access |
-| `PreviouslySeenPostsFilter` | Remove posts user has already seen |
-| `PreviouslyServedPostsFilter` | Remove posts already served in session |
-| `MutedKeywordFilter` | Remove posts with user's muted keywords |
-| `AuthorSocialgraphFilter` | Remove posts from blocked/muted authors |
+**スコアリング前フィルター:**
+| フィルター | 目的 |
+|-----------|------|
+| `DropDuplicatesFilter` | 重複投稿 ID を除外 |
+| `CoreDataHydrationFilter` | コアメタデータのハイドレーションに失敗した投稿を除外 |
+| `AgeFilter` | 閾値より古い投稿を除外 |
+| `SelfpostFilter` | ユーザー自身の投稿を除外 |
+| `RepostDeduplicationFilter` | 同じコンテンツのリポストを重複排除 |
+| `IneligibleSubscriptionFilter` | ユーザーがアクセスできないペイウォールコンテンツを除外 |
+| `PreviouslySeenPostsFilter` | ユーザーが既に見た投稿を除外 |
+| `PreviouslyServedPostsFilter` | セッション中に既に提供した投稿を除外 |
+| `MutedKeywordFilter` | ユーザーのミュート済みキーワードを含む投稿を除外 |
+| `AuthorSocialgraphFilter` | ブロック/ミュート済み投稿者からの投稿を除外 |
 
-**Post-Selection Filters:**
-| Filter | Purpose |
-|--------|---------|
-| `VFFilter` | Remove posts that are deleted/spam/violence/gore etc. |
-| `DedupConversationFilter` | Deduplicate multiple branches of the same conversation thread |
-
----
-
-## Key Design Decisions
-
-### 1. No Hand-Engineered Features
-The system relies entirely on the Grok-based transformer to learn relevance from user engagement sequences. No manual feature engineering for content relevance. This significantly reduces the complexity in our data pipelines and serving infrastructure.
-
-### 2. Candidate Isolation in Ranking
-During transformer inference, candidates cannot attend to each other—only to the user context. This ensures the score for a post doesn't depend on which other posts are in the batch, making scores consistent and cacheable.
-
-### 3. Hash-Based Embeddings
-Both retrieval and ranking use multiple hash functions for embedding lookup
-
-### 4. Multi-Action Prediction
-Rather than predicting a single "relevance" score, the model predicts probabilities for many actions.
-
-### 5. Composable Pipeline Architecture
-The `candidate-pipeline` crate provides a flexible framework for building recommendation pipelines with:
-- Separation of pipeline execution and monitoring from business logic
-- Parallel execution of independent stages and graceful error handling
-- Easy addition of new sources, hydrations, filters, and scorers
+**選択後フィルター:**
+| フィルター | 目的 |
+|-----------|------|
+| `VFFilter` | 削除済み/スパム/暴力/グロなどの投稿を除外 |
+| `DedupConversationFilter` | 同じ会話スレッドの複数ブランチを重複排除 |
 
 ---
 
-## License
+## 主な設計判断
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+### 1. 手作業による特徴エンジニアリングなし
+システムは完全に Grok ベースの Transformer に依存し、ユーザーエンゲージメントシーケンスから関連性を学習します。コンテンツ関連性のための手動特徴エンジニアリングはありません。これにより、データパイプラインと配信インフラの複雑さが大幅に削減されます。
+
+### 2. ランキングにおける候補分離
+Transformer 推論中、候補は互いにアテンションできません—ユーザーコンテキストのみにアテンションします。これにより、投稿のスコアがバッチ内の他の投稿に依存せず、スコアが一貫してキャッシュ可能になります。
+
+### 3. ハッシュベースの埋め込み
+検索とランキングの両方で、埋め込みルックアップに複数のハッシュ関数を使用
+
+### 4. マルチアクション予測
+単一の「関連性」スコアを予測するのではなく、モデルは多くのアクションの確率を予測します。
+
+### 5. 構成可能なパイプラインアーキテクチャ
+`candidate-pipeline` クレートは、柔軟なレコメンドパイプライン構築フレームワークを提供：
+- パイプライン実行・監視とビジネスロジックの分離
+- 独立ステージの並列実行と優雅なエラーハンドリング
+- 新しいソース、ハイドレーション、フィルター、スコアラーの容易な追加
+
+---
+
+## ライセンス
+
+このプロジェクトは Apache License 2.0 でライセンスされています。詳細は [LICENSE](LICENSE) を参照してください。

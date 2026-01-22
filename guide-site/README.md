@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# X アルゴリズム ガイドサイト
 
-## Getting Started
+Xの「おすすめ」フィードを動かすアルゴリズムを解説するWebサイトです。
 
-First, run the development server:
+## プロジェクト概要
+
+このサイトでは、Xのレコメンドシステムがどのように投稿をランキングするかを、わかりやすく日本語で解説しています。
+
+### 主なコンテンツ
+
+- **エンゲージメント重み**: いいね、リプライ、リポストなど各アクションの重み付け
+- **スコアリング仕組み**: Phoenix Scorer と Weighted Scorer による最終スコア計算
+- **やったほうがいい・やってはいけない行動ランキング**: エンゲージメント重みに基づく行動指針
+- **用語集**: アルゴリズム関連の専門用語解説
+
+### データソース
+
+掲載している重みデータは、2023年4月のTwitter公式オープンソースリリースに基づいています。
+
+- [twitter/the-algorithm-ml](https://github.com/twitter/the-algorithm-ml/blob/main/projects/home/recap/README.md)
+
+> **注意**: 2026年現在のX（旧Twitter）は、xai-org/x-algorithm に移行しており、Grokベースの Phoenix Scorer を使用しています。会話の内容や意味がAIによって測定・評価されるようになっています。
+
+## 技術スタック
+
+- **フレームワーク**: [Next.js 15](https://nextjs.org/) (App Router)
+- **UI**: [Material-UI (MUI)](https://mui.com/)
+- **言語**: TypeScript
+- **フォント**: Geist (next/font で最適化)
+
+## 開発環境の起動
 
 ```bash
+# パッケージのインストール
+npm install
+
+# 開発サーバーの起動
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ブラウザで [http://localhost:3000](http://localhost:3000) を開くとサイトが表示されます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## プロジェクト構成
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js App Router ページ
+│   ├── chapters/          # チャプター別解説
+│   ├── specs/             # 技術仕様
+│   ├── rankings/          # 行動ランキング
+│   └── glossary/          # 用語集
+├── components/            # 共通コンポーネント
+└── lib/                   # ユーティリティ・データ
+```
 
-## Learn More
+## ビルド・デプロイ
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 本番ビルド
+npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 本番サーバー起動
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ライセンス
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+このプロジェクトは MIT ライセンスで公開されています。
